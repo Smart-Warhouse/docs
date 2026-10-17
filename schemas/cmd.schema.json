@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-warehouse.local/schemas/cmd.schema.json",
+  "title": "Robot command (wh/fl/{id}/cmd)",
+  "type": "object",
+  "properties": {
+    "cmd": {
+      "enum": [
+        "pause",
+        "resume",
+        "cancel",
+        "go_charge",
+        "reset",
+        "mode"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "manual",
+        "auto"
+      ]
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "cmd",
+    "seq",
+    "ts"
+  ],
+  "additionalProperties": true
+}

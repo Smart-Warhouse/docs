@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-warehouse.local/schemas/state.schema.json",
+  "title": "Robot state (wh/fl/{id}/state, 2 Hz)",
+  "type": "object",
+  "properties": {
+    "online": {
+      "type": "boolean",
+      "description": "false only in the Last-Will message"
+    },
+    "x": {
+      "type": "number"
+    },
+    "y": {
+      "type": "number"
+    },
+    "yaw": {
+      "type": "number"
+    },
+    "speed": {
+      "type": "number"
+    },
+    "battery_pct": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "mode": {
+      "enum": [
+        "idle",
+        "busy",
+        "charging",
+        "paused",
+        "manual",
+        "safe",
+        "estop",
+        "error"
+      ]
+    },
+    "safety_state": {
+      "enum": [
+        "normal",
+        "slow",
+        "stop",
+        "safe",
+        "estop"
+      ]
+    },
+    "fork_height_mm": {
+      "type": "number"
+    },
+    "carrying_pallet_id": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "node": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "last lane-graph node reached"
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "seq",
+    "ts"
+  ],
+  "additionalProperties": true
+}

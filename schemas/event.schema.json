@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-warehouse.local/schemas/event.schema.json",
+  "title": "Safety / error / info event (wh/fl/{id}/event)",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "safety",
+        "error",
+        "info"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ]
+    },
+    "code": {
+      "type": "string",
+      "description": "see docs/02-api-contract.md §5"
+    },
+    "message": {
+      "type": "string"
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "type",
+    "severity",
+    "code",
+    "message",
+    "seq",
+    "ts"
+  ],
+  "additionalProperties": true
+}

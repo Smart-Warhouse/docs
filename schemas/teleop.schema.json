@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-warehouse.local/schemas/teleop.schema.json",
+  "title": "Manual drive (wh/fl/{id}/teleop) — already clamped by the server (SF-07)",
+  "type": "object",
+  "properties": {
+    "v": {
+      "type": "number",
+      "minimum": -0.3,
+      "maximum": 0.3
+    },
+    "w": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1
+    },
+    "lift": {
+      "enum": [
+        -1,
+        0,
+        1
+      ]
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "v",
+    "w",
+    "lift",
+    "seq",
+    "ts"
+  ],
+  "additionalProperties": true
+}

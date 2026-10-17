@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-warehouse.local/schemas/traffic.schema.json",
+  "title": "Lane request / release / grant / deny (wh/traffic/{from}--{to})",
+  "type": "object",
+  "properties": {
+    "robot_id": {
+      "type": "string"
+    },
+    "action": {
+      "enum": [
+        "request",
+        "release",
+        "grant",
+        "deny"
+      ]
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "robot_id",
+    "action",
+    "seq",
+    "ts"
+  ],
+  "additionalProperties": true
+}

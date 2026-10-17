@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://smart-warehouse.local/schemas/task.schema.json",
+  "title": "Task assignment (wh/fl/{id}/task)",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "type": {
+      "const": "move_pallet"
+    },
+    "pallet_id": {
+      "type": "integer"
+    },
+    "from": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "yaw": {
+          "type": "number"
+        },
+        "height_mm": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "location",
+        "x",
+        "y",
+        "yaw",
+        "height_mm"
+      ]
+    },
+    "to": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "yaw": {
+          "type": "number"
+        },
+        "height_mm": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "location",
+        "x",
+        "y",
+        "yaw",
+        "height_mm"
+      ]
+    },
+    "route": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "task_id",
+    "type",
+    "pallet_id",
+    "from",
+    "to",
+    "route",
+    "priority",
+    "issued_at",
+    "seq",
+    "ts"
+  ],
+  "additionalProperties": true
+}
