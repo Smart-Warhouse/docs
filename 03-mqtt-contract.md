@@ -22,9 +22,15 @@ Every message carries `seq` (per-sender counter) and `ts` (UTC ISO-8601); clocks
 ## Behaviour
 
 - **Last Will (CM-03):** each robot connects with will topic `wh/fl/{id}/state`, payload `{"online": false}`, QoS 1.
+  This message is the only one without `seq`/`ts` (the broker sends it later, on the robot's behalf).
   The server marks the robot offline immediately; if no state arrives for `heartbeat_timeout_s` (default 3 s, SF-05)
   it is marked offline anyway. A task not yet lifted is re-queued for another robot (SV-04); a loaded robot keeps
   its task and waits for an operator reset.
+- **Server / Wi-Fi loss (SF-05, T-16):** the robot finishes the lane it is on, stops and waits; when the link
+  comes back it **resumes** its task. Requiring an operator reset instead is a robot-side option
+  (`require_reset_after_server_loss` in `forklift_mission`, default false).
+- **Extension fields:** `task_id` in `state` (current task), `node` in a task's `from`/`to` (lane-graph node of the
+  location), `task_id` in a `cancel` command (ignored unless it is the robot's current task).
 - **Traffic (SV-03, SF-10):** the segment in the topic is `<from>--<to>` (direction of travel). Before driving a lane
   the robot publishes `{"robot_id":"fl1","action":"request"}`; the server answers on the same topic with
   `grant` or `deny` (a robot ignores answers addressed to another `robot_id`). Granted = the lane *and* the far

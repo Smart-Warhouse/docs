@@ -69,11 +69,35 @@
     "ts": {
       "type": "string",
       "format": "date-time"
+    },
+    "task_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "task the robot is executing (extension)"
     }
   },
-  "required": [
-    "seq",
-    "ts"
-  ],
-  "additionalProperties": true
+  "required": [],
+  "additionalProperties": true,
+  "anyOf": [
+    {
+      "required": [
+        "seq",
+        "ts"
+      ],
+      "description": "normal 2 Hz state message"
+    },
+    {
+      "required": [
+        "online"
+      ],
+      "properties": {
+        "online": {
+          "const": false
+        }
+      },
+      "description": "Last-Will message set at connect time (CM-03): just {\"online\": false}, no seq/ts"
+    }
+  ]
 }

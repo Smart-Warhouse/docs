@@ -33,8 +33,8 @@ Source: [system-requirements.md](00-sources/system-requirements.md) and [project
 | `code/dashboard` | Control-room web console UI-01..UI-10 (React 19 + TS + Vite + Tailwind) | built |
 | `code/landing` | Public project website (React + Vite, static) | built |
 | `code/mobile` | Floor operator app: stop-all, alerts, fleet, tasks, manual drive (Flutter) | built |
-| `code/firmware` | ESP32-S3 firmware (PlatformIO, FreeRTOS, micro-ROS) — §4 | placeholder |
-| `code/ros2_ws` | ROS 2 Humble packages on the Jetson — §5–§8 | placeholder |
+| `code/firmware` | ESP32-S3 firmware (PlatformIO, FreeRTOS, micro-ROS) — §4 | written, host-tested, board build OK |
+| `code/ros2_ws` | ROS 2 Humble packages on the Jetson — §5–§9 | written, host-tested; colcon build pending |
 | `code/training` | Docking simulator (MuJoCo + Gymnasium), classical baseline, imitation + PPO training — §8 | built, tested |
 
 ## Why the server is independent of ROS

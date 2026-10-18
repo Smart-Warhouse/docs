@@ -14,3 +14,5 @@
 | 09 | [09-mobile.md](09-mobile.md) | Floor operator app: use cases |
 | 10 | [10-traceability.md](10-traceability.md) | Requirement → code → test |
 | 11 | [11-simulation-training.md](11-simulation-training.md) | Hardware simulation (MuJoCo) for training the docking AI: research, env, baseline, results |
+| 12 | [12-firmware.md](12-firmware.md) | ESP32-S3 firmware: tasks, state machine, safety, what is host-tested vs bench |
+| 13 | [13-ros2.md](13-ros2.md) | ROS 2 packages, node/topic graph per robot, host tests vs what needs Ubuntu |

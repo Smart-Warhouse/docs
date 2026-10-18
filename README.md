@@ -10,9 +10,9 @@ code/
   dashboard/          control-room web console (React + TypeScript)                       ← runs today
   landing/            public project website (React)                                      ← runs today
   mobile/             floor operator app (Flutter)                                        ← runs today
-  firmware/           ESP32-S3 firmware                                                   (placeholder)
-  ros2_ws/            ROS 2 packages for the Jetson                                       (placeholder)
-  training/           YOLO + RL training                                                  (placeholder)
+  firmware/           ESP32-S3 firmware (PlatformIO, FreeRTOS)                            ← host-tested, builds
+  ros2_ws/            ROS 2 packages for the Jetson                                       ← host-tested
+  training/           MuJoCo docking simulator + RL training                              ← runs today
 ```
 
 ## Quick start (no hardware needed)
@@ -32,4 +32,4 @@ cd code/landing && npm install && npm run dev -- --port 5174
 cd code/mobile && flutter pub get && flutter run
 ```
 
-Each folder has its own README with details.
+Each folder has its own README with details. What to do next: [plan.md](plan.md).

@@ -2,7 +2,7 @@
 
 Living plan. Tick a box when its acceptance check passes, not when the code is written. Requirement ids
 (FR-, SF-, AI-, T-…) refer to [docs/00-sources/system-requirements.md](docs/00-sources/system-requirements.md).
-Last updated: 2026-10-18.
+Last updated: 2026-10-18 (firmware, ROS 2, ONNX export, migrations, CI).
 
 The hardware track is the critical path: phases 1–4 run on **one** forklift, then the other two are copied in
 phase 5 (requirements §15). Software that needs no hardware runs in parallel.
@@ -18,7 +18,28 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
       *Check:* `git status` clean; backend `pytest` (26) and training `pytest` (8) pass on the committed tree.
 - [x] Media and models committed directly to git (≈ 21 MB in total, largest file 6.8 MB — no LFS needed yet;
       move to Git LFS if videos grow past ~50 MB).
+- [x] CI workflow `.github/workflows/ci.yml`: backend, dashboard, landing, mobile, training, firmware (native tests + board build), ROS 2 host tests + colcon build in `ros:humble`. *Has not run yet — needs the GitHub repo.*
 - [ ] Create the GitHub repository and push (monorepo layout from NFR-10).
+
+---
+
+## Blocked — needs you (Claude cannot do these from this laptop)
+
+| Item | Why it is blocked | What unblocks it |
+|---|---|---|
+| All of Track A (parts, measuring the forklift, wiring, the floor) | Physical work | You and the team |
+| Retrain the docking AI with the real dimensions | Needs the ME-01 measurements | Send the numbers → about 15 min of retraining (A2) |
+| Build and run ROS 2, Gazebo simulation (B3–B5) | Needs Ubuntu; this laptop has no WSL distro | Run `wsl --install -d Ubuntu-22.04` yourself (it changes system settings), or use an Ubuntu PC |
+| YOLO training data (B6) | Needs the real camera mounted on the forklift | Hardware |
+| Test Mosquitto logins + ACL for real (CM-01, B7) | Docker Desktop's engine is not responding | Restart or repair Docker Desktop |
+| Camera stream for manual control (UI-08) | Needs a stream from the Jetson | Hardware |
+| GitHub repository + push | Publishes the code, so it needs your OK | Say "yes" and private or public |
+| Landing page: team names, supervisor, university, domain, real photos | Claude does not have this information | Send the details (TODOs in `code/landing/src/i18n/copy/`) |
+| Flutter release signing, test on a real phone | Needs your signing keys and a device | You |
+
+**Tooling note:** an old Dart 3.7 at `C:\dart-sdk` comes before Flutter's Dart 3.12 on the PATH. Running
+`dart format` by hand reformats 28 files of `code/mobile` in an older style (CI uses Flutter's Dart and passes).
+Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 
 ---
 
@@ -68,23 +89,27 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 
 ## Track B — Software that can be built now (no hardware needed)
 
-### B1. ESP32-S3 firmware — `code/firmware` (requirements §4) — **recommended next**
-- [ ] PlatformIO project (ESP-IDF or Arduino core) on FreeRTOS, same binary for every forklift, `robot_id` in NVS (FW-12).
-- [ ] Core 1: `safety_task` 1 kHz (E-Stop sense, limits, ToF thresholds 40 cm → 30 % speed / 15 cm → stop,
+### B1. ESP32-S3 firmware — `code/firmware` (requirements §4)
+
+> **Status 2026-10-18:** written. Host: `pio test -e native` **60/60 pass** (safety state machine, ToF/raised-fork/battery limits, rear-steer Ackermann, odometry, PID, lift, Madgwick); board: `pio run -e esp32s3` **builds** (RAM 6.7 %, flash 27.1 %). micro-ROS build (`esp32s3_microros`) only works on Linux/WSL2 — not compiled yet. Bench tests pending. Details: [docs/12-firmware.md](docs/12-firmware.md).
+
+- [x] PlatformIO project (ESP-IDF or Arduino core) on FreeRTOS, same binary for every forklift, `robot_id` in NVS (FW-12).
+- [x] Core 1: `safety_task` 1 kHz (E-Stop sense, limits, ToF thresholds 40 cm → 30 % speed / 15 cm → stop,
       SF-02), `motor_pid_task` 1 kHz (drive speed from AS5600, lift height from the pot, steering servo).
-- [ ] Core 0: `imu_task` (MPU9250 + Madgwick), `microros_task`, `status_task` (INA219, WS2812 ring, buzzer).
-- [ ] State machine BOOT → IDLE → ACTIVE ↔ SLOW → STOP → SAFE / ESTOP; leaving ESTOP needs an explicit reset (FW-08).
-- [ ] Watchdog: no `cmd_vel`/heartbeat for 500 ms → ramp to stop + SAFE (FW-06, SF-04).
-- [ ] SF-08: speed ≤ 0.1 m/s when the forks are above 5 cm.
-- [ ] Calibration stored in NVS (FW-05); diagnostics topic (FW-10).
-- [ ] micro-ROS topics exactly as §10 (`cmd_vel`, `lift_cmd`, `heartbeat`, `wheel_odom`, `imu/data`, `tof_ring`,
+- [x] Core 0: `imu_task` (MPU9250 + Madgwick), `microros_task`, `status_task` (INA219, WS2812 ring, buzzer).
+- [x] State machine BOOT → IDLE → ACTIVE ↔ SLOW → STOP → SAFE / ESTOP; leaving ESTOP needs an explicit reset (FW-08).
+- [x] Watchdog: no `cmd_vel`/heartbeat for 500 ms → ramp to stop + SAFE (FW-06, SF-04).
+- [x] SF-08: speed ≤ 0.1 m/s when the forks are above 5 cm.
+- [x] Calibration stored in NVS (FW-05); diagnostics topic (FW-10).
+- [ ] micro-ROS topics exactly as §10 *(written behind `FL_ENABLE_MICROROS`; first compile on Linux; adds `safety_reset`, `docking_mode`, `diagnostics`)* (`cmd_vel`, `lift_cmd`, `heartbeat`, `wheel_odom`, `imu/data`, `tof_ring`,
       `fork_state`, `battery`, `safety_state`).
       *Check now:* compiles in CI; unit tests for the state machine and the Ackermann conversion on the host.
       *Check later:* T-02, T-03 (speed PID ≤ 300 ms, ≤ 5 %), T-04 (lift ± 3 mm), T-06, T-07 on the bench.
 
 ### B2. Policy export for the Jetson (AI-05, AI-06)
-- [ ] `code/training/scripts/export_onnx.py`: actor network → ONNX; verify ONNX output = PyTorch output.
-- [ ] Safety wrapper in front of the policy: clamp to 0.1 m/s, respect ToF stop, SF-03 front-sensor rule.
+- [x] `code/training/scripts/export_onnx.py`: actor network → ONNX; verify ONNX output = PyTorch output.
+      *Result:* `models/docking_v3/policy.onnx` (78 KB), max difference 6·10⁻⁷, 99 % docked on 200 sim episodes through ONNX Runtime, 0.009 ms per call on the laptop CPU.
+- [x] Safety wrapper in front of the policy: clamp to 0.1 m/s, respect ToF stop, SF-03 front-sensor rule *(`forklift_safety` supervisor + `forklift_rl` sets `docking_mode`; host-tested)*.
 - [ ] On the Jetson later: TensorRT FP16, inference ≤ 5 ms, 20 Hz.
 
 ### B3. Linux / ROS 2 environment (needs Ubuntu)
@@ -92,6 +117,9 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 - [ ] ROS 2 Humble + Nav2 + slam_toolbox + robot_localization + micro-ROS agent (JS-02).
 
 ### B4. ROS 2 packages — `code/ros2_ws` (requirements §5–§9)
+
+> **Status 2026-10-18:** all nine packages written; logic lives in rclpy-free modules, host tests **274 pass, 1 skipped** (MQTT client validated against `docs/schemas`, ArUco ≤ 1 cm / ≤ 2° at ≤ 50 cm on rendered markers, RL observation identical to the training env on 718 recorded states). **Not yet built with colcon or run on ROS** — the `ros2-colcon-build` CI job does the first build. Boxes below tick when they run on Ubuntu/hardware. Details: [docs/13-ros2.md](docs/13-ros2.md).
+
 - [ ] `forklift_description`: URDF/Xacro with the measured dimensions and sensor frames; full TF tree (JS-06).
 - [ ] `forklift_interfaces`: Lift, Task, Status messages/services/actions.
 - [ ] `forklift_mission`: Behavior Tree + MQTT fleet client implementing [docs/03-mqtt-contract.md](docs/03-mqtt-contract.md)
@@ -101,7 +129,7 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 - [ ] `forklift_safety`: supervisor that clamps every command source (Nav2, RL, gamepad) (SF-07).
 - [ ] `forklift_navigation`: slam_toolbox, EKF, Nav2 with Smac Hybrid-A* + Regulated Pure Pursuit, costmaps,
       keepout and speed filters (NV-01 … NV-12).
-- [ ] `forklift_rl`: run the exported policy with TensorRT.
+- [ ] `forklift_rl`: run the exported policy with TensorRT *(onnxruntime path written + tested; TensorRT EP on the Jetson)*.
 - [ ] `forklift_bringup`: one launch file, YAML configs, namespaces `/fl1 /fl2 /fl3`, systemd autostart (JS-05, JS-07).
 - [ ] rosbag recording of every run (JS-08).
 
@@ -117,7 +145,7 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 
 ### B7. Server and apps — remaining items
 - [ ] Test Mosquitto authentication + ACL for real (needs Docker Desktop working) (CM-01).
-- [ ] Add Alembic migrations before the first real deployment.
+- [x] Add Alembic migrations before the first real deployment *(migration 0001 = current schema; the server upgrades on start-up and stamps old dev databases without losing data; tested)*.
 - [ ] Camera stream for manual control (UI-08) — needs a stream from the Jetson.
 - [ ] Release signing for the Flutter app; run it on a real phone.
 - [ ] Landing page: team names, supervisor, university, real photos, domain (TODOs in `code/landing/src/i18n/copy/`).
@@ -163,4 +191,7 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 - `code/mobile` — Flutter floor app (47 tests).
 - `code/ros2_ws/tools/mqtt_robot_client` — reference robot client; real-robot MQTT path tested end to end against a
   Python broker.
-- `code/training` — MuJoCo docking simulator, classical baseline, imitation + PPO policy passing AI-04.
+- `code/training` — MuJoCo docking simulator, classical baseline, imitation + PPO policy passing AI-04, ONNX export.
+- `code/firmware` — ESP32-S3 firmware: 60 host tests, board build OK (micro-ROS build needs Linux).
+- `code/ros2_ws` — nine ROS 2 packages: 274 host tests (colcon build pending).
+- `code/backend` — Alembic migrations (27 tests); `.github/workflows/ci.yml` for every part.
