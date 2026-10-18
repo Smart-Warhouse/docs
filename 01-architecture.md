@@ -35,7 +35,7 @@ Source: [system-requirements.md](00-sources/system-requirements.md) and [project
 | `code/mobile` | Floor operator app: stop-all, alerts, fleet, tasks, manual drive (Flutter) | built |
 | `code/firmware` | ESP32-S3 firmware (PlatformIO, FreeRTOS, micro-ROS) — §4 | placeholder |
 | `code/ros2_ws` | ROS 2 Humble packages on the Jetson — §5–§8 | placeholder |
-| `code/training` | YOLO + RL training (Gymnasium/SB3, Ultralytics) — §6, §8 | placeholder |
+| `code/training` | Docking simulator (MuJoCo + Gymnasium), classical baseline, imitation + PPO training — §8 | built, tested |
 
 ## Why the server is independent of ROS
 

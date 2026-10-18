@@ -13,3 +13,4 @@
 | 08 | [08-landing.md](08-landing.md) | Public project website |
 | 09 | [09-mobile.md](09-mobile.md) | Floor operator app: use cases |
 | 10 | [10-traceability.md](10-traceability.md) | Requirement → code → test |
+| 11 | [11-simulation-training.md](11-simulation-training.md) | Hardware simulation (MuJoCo) for training the docking AI: research, env, baseline, results |
