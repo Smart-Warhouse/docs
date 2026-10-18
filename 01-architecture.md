@@ -6,19 +6,19 @@ Source: [system-requirements.md](00-sources/system-requirements.md) and [project
 
 ```
  ┌──────────────────────────── Layer 4 · Server (LAN laptop / mini PC) ─────────────────────────────┐
- │  code/backend  FastAPI ─ Fleet Manager (allocation, lane graph A*, traffic locks, battery policy)  │
+ │  backend  FastAPI ─ Fleet Manager (allocation, lane graph A*, traffic locks, battery policy)  │
  │                         ─ WMS (PostgreSQL: locations, pallets, tasks, events, moves)              │
  │                         ─ REST /api + WebSocket /ws/live (2 Hz)  ─ simulator (fake robots)        │
  │                Mosquitto MQTT broker                                                             │
- │  code/dashboard  React control-room console  ·  code/mobile  Flutter floor app                   │
- │  code/landing    public project site (no API)                                                    │
+ │  dashboard  React control-room console  ·  mobile  Flutter floor app                   │
+ │  landing    public project site (no API)                                                    │
  └───────────────▲──────────────────────────────── Wi-Fi 5 GHz · MQTT JSON ───────────────────────────┘
                  │ task / cmd / estop ↓       state / task_status / event ↑      traffic request/grant ↕
- ┌───────────────┴──────────── Layer 3 · Jetson Orin Nano Super (×3) — code/ros2_ws ─────────────────┐
+ ┌───────────────┴──────────── Layer 3 · Jetson Orin Nano Super (×3) — robot/ros2_ws ─────────────────┐
  │  forklift_mission (BT + MQTT fleet client) · forklift_navigation (slam_toolbox, EKF, Nav2)         │
  │  forklift_perception (ArUco, YOLO/TensorRT) · forklift_rl (docking policy) · forklift_safety       │
  └───────────────▲──────────────────────────────── USB · micro-ROS ──────────────────────────────────┘
- ┌───────────────┴──────────── Layer 2 · ESP32-S3 — code/firmware ───────────────────────────────────┐
+ ┌───────────────┴──────────── Layer 2 · ESP32-S3 — robot/firmware ───────────────────────────────────┐
  │  Core 1 (1 kHz): safety loop (ToF, limits, E-stop, watchdog 500 ms), PID drive, PID lift           │
  │  Core 0: micro-ROS client, IMU, status LEDs                                                        │
  └───────────────▲─────────────────────────────────────────────────────────────────────────────────┘
@@ -29,20 +29,20 @@ Source: [system-requirements.md](00-sources/system-requirements.md) and [project
 
 | Folder | What | Status |
 |---|---|---|
-| `code/backend` | Fleet Manager + WMS + API + simulator + MQTT bridge (Python 3.11, FastAPI, SQLAlchemy, PostgreSQL/SQLite) | built, tested |
-| `code/dashboard` | Control-room web console UI-01..UI-10 (React 19 + TS + Vite + Tailwind) | built |
-| `code/landing` | Public project website (React + Vite, static) | built |
-| `code/mobile` | Floor operator app: stop-all, alerts, fleet, tasks, manual drive (Flutter) | built |
-| `code/firmware` | ESP32-S3 firmware (PlatformIO, FreeRTOS, micro-ROS) — §4 | written, host-tested, board build OK |
-| `code/ros2_ws` | ROS 2 Humble packages on the Jetson — §5–§9 | written, host-tested, colcon build + tests green in CI |
-| `code/training` | Docking simulator (MuJoCo + Gymnasium), classical baseline, imitation + PPO training — §8 | built, tested |
+| `backend` | Fleet Manager + WMS + API + simulator + MQTT bridge (Python 3.11, FastAPI, SQLAlchemy, PostgreSQL/SQLite) | built, tested |
+| `dashboard` | Control-room web console UI-01..UI-10 (React 19 + TS + Vite + Tailwind) | built |
+| `landing` | Public project website (React + Vite, static) | built |
+| `mobile` | Floor operator app: stop-all, alerts, fleet, tasks, manual drive (Flutter) | built |
+| `robot/firmware` | ESP32-S3 firmware (PlatformIO, FreeRTOS, micro-ROS) — §4 | written, host-tested, board build OK |
+| `robot/ros2_ws` | ROS 2 Humble packages on the Jetson — §5–§9 | written, host-tested, colcon build + tests green in CI |
+| `ai/training` | Docking simulator (MuJoCo + Gymnasium), classical baseline, imitation + PPO training — §8 | built, tested |
 
 ## Why the server is independent of ROS
 
 The server speaks plain MQTT + JSON (§10), so it can be developed and demoed **before any forklift exists**:
 the built-in simulator (SV-06) drives fake robots over the same lane graph, traffic locks and task lifecycle the
 real robots will use. When a real forklift comes online, set `simulated: false` for it in
-`code/backend/app/warehouse_map.yaml`, enable MQTT, and the same Fleet Manager logic drives it.
+`backend/app/warehouse_map.yaml`, enable MQTT, and the same Fleet Manager logic drives it.
 
 ## Key decisions
 

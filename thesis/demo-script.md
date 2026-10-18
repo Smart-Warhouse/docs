@@ -1,6 +1,6 @@
 # Defence demo script — 7–8 minutes
 
-<!-- Commands from code/backend/README.md, code/dashboard/README.md, code/mobile/README.md, code/landing/README.md.
+<!-- Commands from backend/README.md, dashboard/README.md, mobile/README.md, landing/README.md.
      Scenario names from docs/02-api-contract.md (POST /api/sim/scenario) and docs/06-backend.md. -->
 
 **Date / room:** [DATE] · [ROOM] · **Projector:** [RESOLUTION / INPUT]
@@ -14,7 +14,7 @@
 | **Floor operator** | [TEAM MEMBER 3] | Android phone with SW Floor, signed in as `operator` | Phone mirrored on the screen (scrcpy) or shown to the committee |
 | **Backup / forklift** | [TEAM MEMBER 4] | spare laptop with the same checkout + the forklift (if it runs) | Watches the forklift, ready with the fallback laptop and the videos |
 
-Passwords for `admin` / `operator` / `viewer` are in `code/backend/.env.example` (`SEED_*_PASSWORD`). Do not show
+Passwords for `admin` / `operator` / `viewer` are in `backend/.env.example` (`SEED_*_PASSWORD`). Do not show
 them on the projector.
 
 ---
@@ -49,7 +49,7 @@ same Wi-Fi (or the laptop's hotspot).
 **1. Server (FastAPI + simulator, SQLite).** `--host 0.0.0.0` so the phone can reach it.
 
 ```bash
-cd code/backend
+cd backend
 ```
 
 ```bash
@@ -62,7 +62,7 @@ Check: http://localhost:8000/docs opens (Swagger). For a clean start, stop the s
 **2. Dashboard.**
 
 ```bash
-cd code/dashboard
+cd dashboard
 ```
 
 ```bash
@@ -70,7 +70,7 @@ npm run dev
 ```
 
 Open http://localhost:5173 → sign in as `admin` → kiosk at http://localhost:5173/ar/kiosk (second browser window on the
-projector, F11 for full screen). The dashboard reads `VITE_API_BASE_URL` from `code/dashboard/.env`
+projector, F11 for full screen). The dashboard reads `VITE_API_BASE_URL` from `dashboard/.env`
 (default `http://localhost:8000`).
 
 **3. Continuous demo traffic** (as admin; or the Settings page fields):
@@ -85,7 +85,7 @@ Settings page is simpler and avoids pasting a token.]
 **4. Floor app** — on the phone (installed build) or from the laptop:
 
 ```bash
-cd code/mobile
+cd mobile
 ```
 
 ```bash
@@ -99,7 +99,7 @@ laptop beforehand].
 **5. Landing page (optional, for the opening or Q&A):**
 
 ```bash
-cd code/landing
+cd landing
 ```
 
 ```bash
@@ -109,8 +109,8 @@ npm run dev
 http://localhost:5180
 
 **6. Real forklift (only if hardware is ready):** Mosquitto with per-robot users (`docker compose up` in
-`code/backend`, see its README), `MQTT_ENABLED=true` in `code/backend/.env`, the forklift's `simulated: false` in
-`code/backend/app/warehouse_map.yaml`, then power the forklift and wait for it to appear online on the Fleet screen.
+`backend`, see its README), `MQTT_ENABLED=true` in `backend/.env`, the forklift's `simulated: false` in
+`backend/app/warehouse_map.yaml`, then power the forklift and wait for it to appear online on the Fleet screen.
 [CHECK: write the forklift bring-up command here once `forklift_bringup` runs on the Jetson.]
 
 **Simulator scenarios by API** (if the Settings page misbehaves):
@@ -127,7 +127,7 @@ Actions: `person`, `obstacle`, `drain_battery`, `disconnect`, `random_tasks` (wi
 
 - [ ] Laptop on mains power; sleep, screen saver and OS updates disabled; notifications off (Focus mode).
 - [ ] `git status` clean on the demo commit; note the commit hash on paper.
-- [ ] Delete `code/backend/warehouse.db`, start the server, confirm `/docs` opens.
+- [ ] Delete `backend/warehouse.db`, start the server, confirm `/docs` opens.
 - [ ] Dashboard: signed in as `admin` in one window, kiosk in another on the projector; theme dark; language Arabic.
 - [ ] Browser zoom so the whole map fits at the projector resolution; F11 full screen tested.
 - [ ] Demo traffic on (`sim_auto_tasks_per_min` 2) for at least 10 min before the start, so Analytics has data.
@@ -170,5 +170,5 @@ Actions: `person`, `obstacle`, `drain_battery`, `disconnect`, `random_tasks` (wi
 | Allocation (simulator, preliminary) | Hungarian ≈ 300 vs nearest ≈ 210 tasks/h | docs/06-backend.md |
 | Watchdog | SAFE at 501 ms, v = 0 by ≤ 600 ms (host model) | docs/12-firmware.md §6 |
 | Tests | 485 host tests + 134 colcon tests, 9 CI jobs green | docs/thesis/06-software-verification.md |
-| Parts per forklift | 1,507,250 IQD | code/landing/src/content/bom.ts |
+| Parts per forklift | 1,507,250 IQD | landing/src/content/bom.ts |
 | Hardware tests T-01 … T-16 | planned | docs/thesis/07-hardware-validation-plan.md |

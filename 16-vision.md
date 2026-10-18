@@ -1,7 +1,7 @@
 # 16 — YOLO perception (camera object detection)
 
-Requirements §6 (PC-06 … PC-08, PC-11), §9 (SF-06), test T-11. Code: `code/vision` (setup and commands in its
-[README](../code/vision/README.md), data provenance in [DATA_SOURCES.md](../code/vision/DATA_SOURCES.md)).
+Requirements §6 (PC-06 … PC-08, PC-11), §9 (SF-06), test T-11. Code: `ai/vision` (setup and commands in its
+[README](https://github.com/Smart-Warhouse/ai/blob/main/vision/README.md), data provenance in [DATA_SOURCES.md](https://github.com/Smart-Warhouse/ai/blob/main/vision/DATA_SOURCES.md)).
 Plan item B6. Sits next to the ArUco layer of [13-ros2.md](13-ros2.md) (`forklift_perception`).
 
 The tooling, a starter model and the inference wrapper are done. The real dataset needs the forklift camera
@@ -144,7 +144,7 @@ Engines are tied to the GPU and TensorRT version: always build on the Jetson its
 ## 6. Wrapper API for the ROS 2 node
 
 `forklift_vision` is pure Python (numpy, OpenCV, onnxruntime; works with numpy < 2 and the Jetson's OpenCV 4.5),
-no rclpy, no torch — the node is a thin wrapper like the others in `code/ros2_ws` (not written yet).
+no rclpy, no torch — the node is a thin wrapper like the others in `robot/ros2_ws` (not written yet).
 
 ```python
 from forklift_vision.detector import YoloOnnxDetector, Detection
@@ -199,7 +199,7 @@ Record both in the table below with date, model and commit.
 ## 8. Starter model (non-final data — NOT the PC-08 result)
 
 `models/starter_v1` exists to run the pipeline end-to-end before the camera is mounted. Data (details and
-licences in [DATA_SOURCES.md](../code/vision/DATA_SOURCES.md)): 587 COCO val2017 images of people (CC BY /
+licences in [DATA_SOURCES.md](https://github.com/Smart-Warhouse/ai/blob/main/vision/DATA_SOURCES.md)): 587 COCO val2017 images of people (CC BY /
 BY-SA / no known restrictions only) + 1800 MuJoCo renders of the 1:14 scene with exact boxes from the
 segmentation render, 601 of them with COCO person cut-outs pasted in. 2387 images, split 1694 / 471 / 222.
 

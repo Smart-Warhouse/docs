@@ -1,11 +1,11 @@
 # 17 — Integration and performance tests (fleet over MQTT)
 
-`code/integration/` runs the real server against a real broker and real robot clients — no mocks between them:
+`backend/integration/` runs the real server against a real broker and real robot clients — no mocks between them:
 
 ```
 Mosquitto (passwords + ACL)  ⇄  FastAPI server (MQTT_ENABLED=true)  ⇄  REST / WebSocket test clients
         ⇅                       map copy: fl1..fl3 (perf: fl1..fl4) simulated: false
-3–4 × reference robot client (code/ros2_ws/tools/mqtt_robot_client/robot_client.py), one MQTT user each
+3–4 × reference robot client (robot/ros2_ws/tools/mqtt_robot_client/robot_client.py), one MQTT user each
 ```
 
 It closes plan.md B7 "Test Mosquitto authentication + ACL" (CM-01) in CI and is the automated version of T-14
@@ -30,7 +30,7 @@ The robot client stands in for `forklift_mission`, so these tests check the serv
 ## Run locally
 
 ```bash
-cd code/integration
+cd backend/integration
 ../backend/.venv/Scripts/pip install -r requirements.txt     # on top of the backend's requirements
 ../backend/.venv/Scripts/python -m pytest -v -rs              # e2e + faults + perf (relaxed thresholds), ~4-5 min
 ../backend/.venv/Scripts/python perf/run_perf.py              # perf with the spec targets → table + perf/results.json
@@ -61,7 +61,7 @@ no password is committed:
 
 ```yaml
   # in jobs.changes: outputs.integration: ${{ steps.f.outputs.integration }}, and in the paths filter:
-  #   integration: ['code/integration/**', 'code/backend/**', 'code/ros2_ws/tools/**', '.github/workflows/ci.yml']
+  #   integration: ['backend/integration/**', 'backend/**', 'robot/ros2_ws/tools/**', '.github/workflows/ci.yml']
   integration:
     needs: changes
     if: needs.changes.outputs.integration == 'true'
@@ -85,17 +85,17 @@ no password is committed:
           python-version: "3.11"
           cache: pip
           cache-dependency-path: |
-            code/backend/requirements.txt
-            code/integration/requirements.txt
-      - run: pip install -r code/backend/requirements.txt -r code/integration/requirements.txt
+            backend/requirements.txt
+            backend/integration/requirements.txt
+      - run: pip install -r backend/requirements.txt -r backend/integration/requirements.txt
       - name: Load the repo's mosquitto.conf + ACL and generated test logins into the broker
         run: |
-          python code/integration/stack.py broker-config /tmp/mqtt
+          python backend/integration/stack.py broker-config /tmp/mqtt
           docker cp /tmp/mqtt/. mqtt:/mosquitto/config/
           docker exec mqtt sh -c 'chown mosquitto:mosquitto /mosquitto/config/passwd /mosquitto/config/acl && chmod 0600 /mosquitto/config/passwd /mosquitto/config/acl'
           docker restart mqtt
       - name: Fleet over Mosquitto + perf (relaxed thresholds)
-        working-directory: code/integration
+        working-directory: backend/integration
         run: python -m pytest -v -rs
       - if: always()
         uses: actions/upload-artifact@v4

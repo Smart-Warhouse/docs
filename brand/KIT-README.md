@@ -49,8 +49,8 @@ Target: **Thmanyah Sans** (Arabic UI and body), **Thmanyah Serif Text** (large A
 ## Project paths (integration suggestions)
 
 - `docs/brand/logo/` — versioned brand master files.
-- `code/dashboard/public/` — browser favicon and transparent SVG wordmark.
-- `code/landing/public/` — horizontal SVG wordmark.
-- `code/mobile/assets/` — iOS / Android icon raster and SVG masters.
+- `dashboard/public/` — browser favicon and transparent SVG wordmark.
+- `landing/public/` — horizontal SVG wordmark.
+- `mobile/assets/` — iOS / Android icon raster and SVG masters.
 
 This kit creates graphics/assets only. The actual application code and Figma files are not updated by this export.

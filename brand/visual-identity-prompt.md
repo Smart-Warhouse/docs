@@ -65,4 +65,4 @@ consistent with the dashboard, landing page and app.
 - Arabic first, right-to-left; maps, charts and coordinates stay left-to-right.
 - Final logo files to produce: SVG (primary, stacked, symbol, mono), PNG 512/1024, favicon 32/16, Android
   adaptive icon (foreground + background), iOS 1024 icon. Put them in `docs/brand/logo/`; then the dashboard
-  (`code/dashboard/public`), landing (`code/landing/public`) and app (`code/mobile/assets`) can switch to them.
+  (`dashboard/public`), landing (`landing/public`) and app (`mobile/assets`) can switch to them.

@@ -2,7 +2,7 @@
 
 Only requirements touched by the code in this repository are listed. Hardware, firmware, ROS 2 and training
 requirements (ME-*, EL-*, FW-*, JS-*, PC-*, NV-*, AI-01..07) have no code yet. Test names refer to
-`code/backend/tests/`; UI rows point at the per-app docs.
+`backend/tests/`; UI rows point at the per-app docs.
 
 | Req | What | Where | Verified by |
 |---|---|---|---|

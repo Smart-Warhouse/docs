@@ -1,8 +1,8 @@
-# 07 — Web monitoring dashboard (`code/dashboard`)
+# 07 — Web monitoring dashboard (`dashboard`)
 
 React 19 + Vite + TypeScript (strict) + Tailwind 3.4 single-page app. Pure client of the FastAPI server: it enforces
 nothing the server does not (every role/state check is a UX mirror; the server still answers `403 forbidden` /
-`409 invalid_state`). Arabic RTL by default, English LTR; light / dark / OS theme. Run instructions: `code/dashboard/README.md`.
+`409 invalid_state`). Arabic RTL by default, English LTR; light / dark / OS theme. Run instructions: `dashboard/README.md`.
 
 ## 1. Screens ↔ requirements
 
@@ -42,7 +42,7 @@ its connection (the robot kept encoding for nobody).
 - Local demo: [`docs/media/screenshots/07b-manual-control-camera.png`](media/screenshots/07b-manual-control-camera.png)
   (laptop webcam through the standalone streamer → server relay → dashboard, fl1 in manual mode). Run it with
   `python -m forklift_camera_stream.standalone --source 0` (or `--source test` without a webcam) in
-  `code/ros2_ws/src/forklift_camera_stream`; fl1's `camera_url` already points at `http://127.0.0.1:8081/stream.mjpg`.
+  `robot/ros2_ws/src/forklift_camera_stream`; fl1's `camera_url` already points at `http://127.0.0.1:8081/stream.mjpg`.
 
 Role gating (SV-07): **viewer** sees everything read-only (write buttons visible but disabled with "Requires the
 Operator role"); **operator** gets tasks, robot commands, E-stop / release, manual control, pallet registration;

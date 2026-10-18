@@ -34,7 +34,7 @@ Placeholders: [TEAM MEMBERS], [SUPERVISOR], [UNIVERSITY], [DEPARTMENT], [DATE]. 
 **الكلمات المفتاحية:** أسطول روبوتات ذاتية، رافعة شوكية، إدارة المخزون، ROS 2، التعلم المعزّز، إدارة المرور، السلامة.
 
 <!-- sources: docs/00-sources/system-requirements.md §1, §9; docs/11-simulation-training.md §4 (98.6 %, 90 %, 6.4 s, 10.3 s);
-     code/training/models/docking_v3/meta.json eval_1000; code/training/models/baseline_eval.json; plan.md Track C -->
+     ai/training/models/docking_v3/meta.json eval_1000; ai/training/models/baseline_eval.json; plan.md Track C -->
 
 ## Abstract
 
@@ -123,7 +123,7 @@ intervention, and safety that keeps working when the Jetson or the Wi-Fi fails.
   public landing page, docking simulator and training pipeline.
   <!-- docs/01-architecture.md "Code map"; docs/13-ros2.md §1 -->
 - A parts budget of about **1,507,250 IQD per forklift** (the Jetson alone is 995,000 IQD).
-  <!-- plan.md A1; code/landing/src/content/bom.ts BOM_TOTAL_IQD, BOM_JETSON_IQD -->
+  <!-- plan.md A1; landing/src/content/bom.ts BOM_TOTAL_IQD, BOM_JETSON_IQD -->
 
 **Out of scope.** Full-scale vehicles, outdoor operation, mixed traffic with other vendors' robots, a production
 security model beyond per-robot broker credentials and role-based access, and certification against industrial

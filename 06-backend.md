@@ -1,6 +1,6 @@
 # 06 — Backend (Fleet Manager + WMS + API)
 
-Code: `code/backend`. Contract: [02-api-contract.md](02-api-contract.md), [03-mqtt-contract.md](03-mqtt-contract.md).
+Code: `backend`. Contract: [02-api-contract.md](02-api-contract.md), [03-mqtt-contract.md](03-mqtt-contract.md).
 
 ## Modules
 

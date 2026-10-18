@@ -1,7 +1,7 @@
 # Chapter 4 — Simulation and AI: learning to dock
 
-<!-- Sources: docs/11-simulation-training.md; code/training/models/docking_v3/meta.json; code/training/models/baseline_eval.json;
-     code/training/README.md; plan.md B2. All results in this chapter are SIMULATION results. The real-forklift
+<!-- Sources: docs/11-simulation-training.md; ai/training/models/docking_v3/meta.json; ai/training/models/baseline_eval.json;
+     ai/training/README.md; plan.md B2. All results in this chapter are SIMULATION results. The real-forklift
      comparison (AI-07 / T-12) is planned (Chapter 7). -->
 
 ## 4.1 The task
@@ -57,7 +57,7 @@ retries when the fork tips arrive misaligned. It uses the same observation as th
 
 **On 1000 randomised test episodes (seeds 10000–10999) it docked 90.0 %, with 0 % collisions, 10.3 s mean time and
 1.7 mm mean lateral error at the tips.**
-<!-- docs/11-simulation-training.md §3; code/training/models/baseline_eval.json: success_rate 0.9, collision_rate 0.0,
+<!-- docs/11-simulation-training.md §3; ai/training/models/baseline_eval.json: success_rate 0.9, collision_rate 0.0,
      mean_time_s 10.3025, mean_lateral_mm 1.67 -->
 
 ## 4.5 What did not work
@@ -115,7 +115,7 @@ seeds. The rule was **maximise success − 2 × collision rate**.
 | PPO 875 k | 96.3 % | 3.8 % | 6.3 s | 2.3 mm |
 | PPO 1 M | 94.3 % | 5.8 % | 6.3 s | 2.2 mm |
 
-<!-- code/training/models/docking_v3/meta.json "validation" (rounded to one decimal; checkpoint names are 124,992 …
+<!-- ai/training/models/docking_v3/meta.json "validation" (rounded to one decimal; checkpoint names are 124,992 …
      999,936 steps). [CHECK: draw this as Figure 4.2, success and collision vs steps] -->
 
 The selected checkpoint was then scored **once** on the test seeds.

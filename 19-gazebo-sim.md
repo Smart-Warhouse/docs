@@ -1,6 +1,6 @@
 # 19 — Gazebo digital twin (`forklift_sim`)
 
-Requirements AI-01 ("Gazebo for the full system"), EN-11; plan item B5. Code: `code/ros2_ws/src/forklift_sim`.
+Requirements AI-01 ("Gazebo for the full system"), EN-11; plan item B5. Code: `robot/ros2_ws/src/forklift_sim`.
 CI: `.github/workflows/sim.yml`. The ROS graph it feeds is described in [13-ros2.md](13-ros2.md); the docking policy
 is trained separately in MuJoCo ([11-simulation-training.md](11-simulation-training.md)).
 
@@ -21,7 +21,7 @@ in `config/bridge.yaml`, and `ign gazebo` → `gz sim` in `launch/sim.launch.py`
 
 | Real system | Twin | Where |
 |---|---|---|
-| Mini warehouse 6 × 4 m (1:14) | Generated from `code/backend/app/warehouse_map.yaml`: 4 walls 0.45 m high (LiDAR 0.36 m + ≥ 5 cm, EN-07), racks R1/R2 as 0.15 m boxes, coloured floor patches for docks, staging, chargers, walkway, keep-out | `worlds/warehouse.sdf` (`scripts/generate_world.py`) |
+| Mini warehouse 6 × 4 m (1:14) | Generated from `backend/app/warehouse_map.yaml`: 4 walls 0.45 m high (LiDAR 0.36 m + ≥ 5 cm, EN-07), racks R1/R2 as 0.15 m boxes, coloured floor patches for docks, staging, chargers, walkway, keep-out | `worlds/warehouse.sdf` (`scripts/generate_world.py`) |
 | Occupancy map from slam_toolbox (NV-01) | Same walls + racks rasterised at 2 cm, for `localization:=truth` | `maps/warehouse_sim.{pgm,yaml}` (same script) |
 | Forklift body, mast, fork carriage, frames | `forklift_description` URDF unchanged (same `dimensions.yaml`), included by a sim Xacro | `urdf/forklift_gz.urdf.xacro` |
 | RPLIDAR C1, 360°, 10 Hz | `gpu_lidar` 450 samples, 0.05–12 m, σ 1 cm → `/<id>/scan` (frame `laser`) | sim Xacro |
@@ -61,7 +61,7 @@ All nodes run with `use_sim_time: true`. Each robot gets robot_state_publisher (
 
 ```bash
 sudo apt install ros-humble-desktop ros-humble-ros-gz        # ros-gz pulls Gazebo Fortress
-cd code/ros2_ws
+cd robot/ros2_ws
 rosdep install --from-paths src --ignore-src -y --rosdistro humble --skip-keys "sllidar_ros2 micro_ros_agent"
 colcon build --packages-up-to forklift_sim && source install/setup.bash
 ros2 launch forklift_sim sim.launch.py robots:=fl1,fl2 stack:=nav gui:=true

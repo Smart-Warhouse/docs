@@ -2,7 +2,7 @@
 
 Requirements §2 (ME-04 … ME-12), §3 (EL-01 … EL-10, pin table). Plan items A3 and A4. Bench tests that follow
 this build: [15-bench-tests.md](15-bench-tests.md). Firmware side: [12-firmware.md](12-firmware.md) and
-[code/firmware/README.md](../code/firmware/README.md).
+[robot/firmware/README.md](https://github.com/Smart-Warhouse/robot/blob/main/firmware/README.md).
 
 > **Status 2026-10-18:** CAD written and tested on the laptop, nothing printed or wired yet. Only the
 > Huina 1577 Pro outer size (52.4 × 18.7 × 31.7 cm) is real; every other mechanical number is a
@@ -11,15 +11,15 @@ this build: [15-bench-tests.md](15-bench-tests.md). Firmware side: [12-firmware.
 
 ## 1. Printed mounts (CadQuery)
 
-Code: [`code/cad/`](../code/cad/). One parameter file, [`params.yaml`](../code/cad/params.yaml), holds every
+Code: [`robot/cad/`](https://github.com/Smart-Warhouse/robot/tree/main/cad). One parameter file, [`params.yaml`](https://github.com/Smart-Warhouse/robot/blob/main/cad/params.yaml), holds every
 dimension (41 values marked PLACEHOLDER); the values shared with the RL simulator
-(`code/training/forklift_rl/config.yaml`) and the firmware (`LIFT_MAX_MM`) are kept equal and a test checks it.
+(`ai/training/forklift_rl/config.yaml`) and the firmware (`LIFT_MAX_MM`) are kept equal and a test checks it.
 
 ```powershell
-cd code/cad
+cd robot/cad
 py -3.11 -m venv .venv
 .venv\Scripts\pip install -r requirements.txt
-.venv\Scripts\python build.py        # STL + STEP → code/cad/out/ (gitignored), PNG → docs/media/cad/
+.venv\Scripts\python build.py        # STL + STEP → robot/cad/out/ (gitignored), PNG → docs/media/cad/
 .venv\Scripts\python -m pytest -q    # every part builds, is one valid solid, fits 220 × 220 × 250, ME-* checks
 ```
 
@@ -119,7 +119,7 @@ Rules:
 
 ## 3. ESP32-S3 Zero pin map (from `config.h`)
 
-Source of truth: [`code/firmware/lib/forklift_core/src/forklift/config.h`](../code/firmware/lib/forklift_core/src/forklift/config.h).
+Source of truth: [`robot/firmware/lib/forklift_core/src/forklift/config.h`](https://github.com/Smart-Warhouse/robot/blob/main/firmware/lib/forklift_core/src/forklift/config.h).
 Verify every pad against the real Waveshare Zero before soldering (plan A4). No strapping pins (0, 45, 46),
 no PSRAM / flash pins; GPIO 19/20 are the native USB (micro-ROS), GPIO 21 is the on-board RGB LED.
 

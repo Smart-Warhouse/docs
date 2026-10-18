@@ -1,6 +1,6 @@
 # 02 — Server API contract (REST + WebSocket)
 
-Source of truth for `code/backend` and its three clients (`code/dashboard`, `code/mobile`, and — for the
+Source of truth for `backend` and its three clients (`dashboard`, `mobile`, and — for the
 `/api/public/*` stats only — nothing else; the landing page calls no API). Requirements: §10–§12 of
 [system-requirements.md](00-sources/system-requirements.md) (SV-*, UI-*, SF-11).
 
@@ -226,5 +226,5 @@ Client → server: `{ "type": "ping" }` (server replies `{ "type": "pong" }`). R
 
 ## 6. Development logins
 
-Seeded only when the database is empty (`code/backend/app/seed.py`): `admin`, `operator`, `viewer` — passwords are in
-`code/backend/.env.example` (`SEED_*_PASSWORD`), dev-only; change them before any real deployment.
+Seeded only when the database is empty (`backend/app/seed.py`): `admin`, `operator`, `viewer` — passwords are in
+`backend/.env.example` (`SEED_*_PASSWORD`), dev-only; change them before any real deployment.

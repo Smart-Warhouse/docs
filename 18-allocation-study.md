@@ -2,8 +2,8 @@
 
 Requirement **AI-08**: server-side task allocation, v1 a simple rule (nearest robot with enough battery),
 then an improvement (Hungarian algorithm), *compared by mean task completion time*. Code:
-[`code/experiments/allocation/`](../code/experiments/allocation/) (runner, analysis, smoke test);
-raw data in `code/experiments/allocation/results/`; charts in [`media/allocation/`](media/allocation/).
+[`backend/experiments/allocation/`](https://github.com/Smart-Warhouse/backend/tree/main/experiments/allocation) (runner, analysis, smoke test);
+raw data in `backend/experiments/allocation/results/`; charts in [`media/allocation/`](media/allocation/).
 
 **Result in one paragraph.** When work arrives slower than the fleet can serve it, the two strategies are
 practically the same: identical at the low rate, and at the medium rate Hungarian is 3–16 % faster on mean
@@ -69,7 +69,7 @@ signed-rank as a non-parametric check, and Cohen's *d*z (mean difference ÷ SD o
 
 ## 2. Results
 
-Full tables for every metric: `code/experiments/allocation/results/tables.md`; per-run data `runs.csv`, per-task
+Full tables for every metric: `backend/experiments/allocation/results/tables.md`; per-run data `runs.csv`, per-task
 data `tasks.csv`, aggregates `summary_by_cell.csv`, tests `paired_tests.csv`, priority breakdown
 `priority_breakdown.csv`.
 
@@ -177,7 +177,7 @@ why earlier stress runs (3 robots) did not show it.
 Fix (`manager._reroute_one` → `_random_back_off`): when ≥ 6 deadlocks occur within 30 s, back off a random robot
 of the cycle **or one queued behind it** to a random free neighbour (aisle nodes first), using the manager's
 seeded RNG. Normal operation is unchanged: re-running the 2- and 3-robot cells gave the same throughput to
-within 0.3 tasks/h. After the fix: 0 stalls in 270 runs. Regression tests: `code/backend/tests/test_livelock.py`
+within 0.3 tasks/h. After the fix: 0 stalls in 270 runs. Regression tests: `backend/tests/test_livelock.py`
 reproduces the livelock (seed 10, demo traffic, 4 robots) without the escalation and checks that it is
 resolved with it. An alternative tried first (a "don't block the box" rule: enter a junction only if the node
 after it is free) made things worse: it froze two robots that need to swap between facing spurs.
@@ -225,7 +225,7 @@ could not show: (1) it holds only when the queue is saturated: at realistic load
 ## 6. Reproduce
 
 ```bash
-cd code/experiments/allocation
+cd backend/experiments/allocation
 ../../backend/.venv/Scripts/python sim_runner.py      # 270 runs, ~15 min on 12 workers → results/
 python -m pip install -r requirements.txt              # numpy, scipy, matplotlib (analysis only)
 python analyse.py                                      # tables, tests, charts → docs/media/allocation/

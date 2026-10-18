@@ -1,13 +1,13 @@
 # 11 — Hardware simulation for training the docking AI
 
-Requirements §8 (AI-01..AI-09) and the pallet-docking task table. Code: `code/training/`.
+Requirements §8 (AI-01..AI-09) and the pallet-docking task table. Code: `ai/training/`.
 
 ## 1. What was researched
 
 | Option | What it gives | Fit for this project today |
 |---|---|---|
 | **NVIDIA Isaac Sim / Isaac Lab** | Photoreal rendering, thousands of parallel envs on the GPU, strong domain randomisation. A 2024 study of a **1:14 forklift** used Isaac Sim + PPO with camera images as input and reached **60 % real-world approach success** (10 trials) — the closest prior work to this project. | Needs an RTX card with ≥ 8 GB (RTX 3070 minimum, 4080 recommended per NVIDIA forum guidance) and in practice Linux. This laptop has an **RTX 4050 Laptop, 6 GB** → below the minimum. Revisit on a lab PC or Colab-class GPU. |
-| **Gazebo (Harmonic) + ROS 2** | Full-system digital twin: LiDAR, camera, Nav2, the real ROS nodes. Most published forklift RL work uses Gazebo (e.g. a 2026 multi-expert forklift RL paper on Gazebo 11 + ROS Noetic with randomised mass, friction and obstacles). | Needs Linux (Ubuntu 22.04 / WSL2). No WSL distro is installed here. Planned for `code/ros2_ws/forklift_sim` (AI-01 "full system"). |
+| **Gazebo (Harmonic) + ROS 2** | Full-system digital twin: LiDAR, camera, Nav2, the real ROS nodes. Most published forklift RL work uses Gazebo (e.g. a 2026 multi-expert forklift RL paper on Gazebo 11 + ROS Noetic with randomised mass, friction and obstacles). | Needs Linux (Ubuntu 22.04 / WSL2). No WSL distro is installed here. Planned for `robot/ros2_ws/forklift_sim` (AI-01 "full system"). |
 | **MuJoCo + Gymnasium** | Fast, accurate contact physics, native on Windows, offscreen rendering, ~2,000 env-steps/s per CPU core, plugs straight into Stable-Baselines3. No published forklift work found — but the requirement only needs a light env for fast training (AI-01 "بيئة Gymnasium خفيفة"). | **Chosen** for the training env now. |
 
 Design consequence: instead of learning from pixels (the 60 % study), our policy observes the **ArUco pallet pose**
@@ -81,7 +81,7 @@ controller and stays within the 10 mm lateral limit. The remaining 1.4 % are col
 supervisor and the ESP32 ToF ring do **not** catch them, because they happen with the forks already inside the
 pallet. The baseline's 0 % collision rate is a reason to keep it as the fallback. These are simulation results
 only; the real comparison is AI-07 / T-12.
-Model files: `code/training/models/docking_v3/` (`policy_selected.zip`, `meta.json` with every number above).
+Model files: `ai/training/models/docking_v3/` (`policy_selected.zip`, `meta.json` with every number above).
 Video: [`docs/media/rl-docking-simulation.mp4`](media/rl-docking-simulation.mp4).
 
 ## 5. Safety supervisor (AI-06)
@@ -190,5 +190,5 @@ collision" video would be misleading.
 3. Docking logic: stop at the insertion depth and back off when the lateral error is too large (§5.4), then
    re-run `scripts/eval_safety.py`.
 4. Real comparison: 30 baseline + 30 RL attempts (AI-07, T-12).
-5. Full-system twin in Gazebo Harmonic (`code/ros2_ws/forklift_sim`) once a Linux machine is available; Isaac Lab if
+5. Full-system twin in Gazebo Harmonic (`robot/ros2_ws/forklift_sim`) once a Linux machine is available; Isaac Lab if
    an 8 GB+ RTX GPU is available.

@@ -1,7 +1,7 @@
 # Chapter 5 — Fleet management
 
 <!-- Sources: docs/06-backend.md, docs/04-data-model.md, docs/03-mqtt-contract.md, docs/10-traceability.md,
-     code/backend/app/fleet/{graph,traffic,allocator,manager}.py.
+     backend/app/fleet/{graph,traffic,allocator,manager}.py.
      TODO(allocation study): docs/18-allocation-study.md is being written in a parallel session. When it exists,
      replace §5.5 "Allocation results" with its method and numbers and cite it. -->
 
@@ -15,7 +15,7 @@ simple allocation rule with an optimised one by task completion time (AI-08).
 
 ## 5.2 The lane graph
 
-The floor is described once in `code/backend/app/warehouse_map.yaml`: nodes, edges (lanes), zones, locations and
+The floor is described once in `backend/app/warehouse_map.yaml`: nodes, edges (lanes), zones, locations and
 robots. The current map is a 6 m × 4 m floor with a bottom corridor at y = 0.6 m, a top corridor at y = 3.4 m, three
 aisles at x = 1.0 / 3.0 / 5.0 m, two racks with 16 locations, 2 inbound and 2 outbound docks, 2 staging spots and 4
 chargers. All coordinates are placeholders until the real floor is measured; changing the floor means editing only
@@ -28,7 +28,7 @@ this file.
 
 **Routes.** A* on the lane graph with Euclidean edge lengths, optionally avoiding a set of blocked nodes (used for
 detours, §5.4). On the robot, Nav2 drives each lane; the server's graph decides *which* lanes (NV-09).
-<!-- code/backend/app/fleet/graph.py; docs/13-ros2.md mission -->
+<!-- backend/app/fleet/graph.py; docs/13-ros2.md mission -->
 
 **Adding a robot** is one line in the `robots:` list (NFR-09); the spare `fl4` is defined but disabled.
 <!-- docs/10-traceability.md NFR-09 -->
@@ -38,7 +38,7 @@ detours, §5.4). On the robot, Nav2 drives each lane; the server's graph decides
 Two kinds of resources exist: every **node** and every **edge** (lane, undirected). A robot standing on node A that
 wants to drive to B must hold the lock on edge A–B **and** on node B before it moves. On arrival it releases A and the
 edge and keeps B.
-<!-- code/backend/app/fleet/traffic.py module docstring -->
+<!-- backend/app/fleet/traffic.py module docstring -->
 
 **All-or-nothing acquisition.** `try_acquire(robot, [edge, node])` takes either all requested resources or none.
 If any is held by another robot, the request fails, nothing is taken, and the robot is recorded as *waiting for*
@@ -75,7 +75,7 @@ fleet tick:
    (paused, error, offline) is re-routed the same way.
 
 Each resolution writes a `deadlock_resolved` event to the log.
-<!-- code/backend/app/fleet/manager.py _resolve_traffic, _reroute_one; STUCK_REROUTE_S = 6.0 -->
+<!-- backend/app/fleet/manager.py _resolve_traffic, _reroute_one; STUCK_REROUTE_S = 6.0 -->
 
 The back-off step was added after stress testing: before it, long runs could gridlock; after it, **10 runs × 1
 simulated hour with 3 robots, continuous random tasks and a 5 % pickup-failure rate showed no gridlock.**
@@ -99,7 +99,7 @@ unreachable pairs cost ∞.
 | `nearest` (v1) | In priority order, each task takes the cheapest still-free robot | O(T·R) |
 | `hungarian` (v2) | Minimum total travel over all task–robot pairs (Kuhn–Munkres) | O(n³) |
 
-<!-- code/backend/app/fleet/allocator.py -->
+<!-- backend/app/fleet/allocator.py -->
 
 The greedy rule is what AI-08 calls the first version; the Hungarian method is the optimised version. Greedy
 allocation can give a nearby robot to the first task in the queue even when another task is right next to it, forcing

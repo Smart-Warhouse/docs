@@ -16,11 +16,11 @@
 | 11 | [11-simulation-training.md](11-simulation-training.md) | Hardware simulation (MuJoCo) for training the docking AI: research, env, baseline, results |
 | 12 | [12-firmware.md](12-firmware.md) | ESP32-S3 firmware: tasks, state machine, safety, what is host-tested vs bench |
 | 13 | [13-ros2.md](13-ros2.md) | ROS 2 packages, node/topic graph per robot, host tests vs what needs Ubuntu |
-| 14 | [14-hardware-build.md](14-hardware-build.md) | Wiring diagram, power tree, pin map, 3D-printed mounts (`code/cad`) |
+| 14 | [14-hardware-build.md](14-hardware-build.md) | Wiring diagram, power tree, pin map, 3D-printed mounts (`robot/cad`) |
 | 15 | [15-bench-tests.md](15-bench-tests.md) | Step-by-step bench tests T-01 … T-07 with the firmware console |
 | 16 | [16-vision.md](16-vision.md) | YOLO pipeline: data collection, training, ONNX/TensorRT export |
 | 17 | [17-integration-tests.md](17-integration-tests.md) | Fleet over a real Mosquitto broker + server response times |
 | 18 | [18-allocation-study.md](18-allocation-study.md) | Task allocation study: nearest vs Hungarian (AI-08) |
-| 19 | 19-gazebo-sim.md — on branch `sim-ci` until merged | Gazebo digital twin running headless in CI |
+| 19 | [19-gazebo-sim.md](19-gazebo-sim.md) | Gazebo digital twin running headless in CI |
 | — | [thesis/](thesis/) | Thesis chapter drafts, demo script; defence deck: https://claude.ai/artifact/SMrvxUx6hZ3rMrHL4nJYG2 |
 | — | [brand/](brand/) | Approved brand kit (logo, app icons, tokens) and the visual-identity prompt |

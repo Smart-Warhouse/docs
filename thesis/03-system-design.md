@@ -67,12 +67,12 @@ logic (the tail swings out in a turn) and for the planner (minimum turning radiu
 | Actuation | 2 × MX1508 H-bridge · MG90S servo · E-Stop · WS2812 ring · buzzer | 15,250 |
 | **Total** | | **1,507,250** |
 
-<!-- code/landing/src/content/bom.ts (grouped from docs/00-sources/parts-bom.pdf; bom.test.ts checks the sum) -->
+<!-- landing/src/content/bom.ts (grouped from docs/00-sources/parts-bom.pdf; bom.test.ts checks the sum) -->
 [CHECK: the parts list is not complete — docs/14-hardware-build.md §5 lists items still to buy, several of which
 block the first power-up (12 V boost converter ≥ 30 W for the Jetson, a 0.01 Ω INA219 shunt, fuse, main switch, a
 second E-Stop contact block, capacitors, connectors). Add their cost when bought.]
 
-Mounts are generated with CadQuery from a single parameter file (`code/cad/params.yaml`, 41 values still marked
+Mounts are generated with CadQuery from a single parameter file (`robot/cad/params.yaml`, 41 values still marked
 PLACEHOLDER); wiring, the power tree and the pin map are in [docs/14-hardware-build.md](../14-hardware-build.md).
 <!-- docs/14-hardware-build.md §1, §5 -->
 
@@ -226,7 +226,7 @@ drive that sends commands only while a dead-man button is held.
 
 **Landing page.** A static bilingual site that presents the project; numbers on it are labelled as design targets
 until tests pass.
-<!-- code/landing/README.md "Honesty" -->
+<!-- landing/README.md "Honesty" -->
 
 ![Landing page](../media/screenshots/20-landing-ar-dark-top.png)
 **Figure 3.6** — Project landing page (Arabic, dark theme).

@@ -1,6 +1,6 @@
 # 08 — Landing page
 
-The public page of the project, in `code/landing/` (developer notes: `code/landing/README.md`).
+The public page of the project, in `landing/` (developer notes: `landing/README.md`).
 Static React 19 + Vite + TypeScript SPA, Tailwind 3.4, react-router-dom 7, Phosphor icons. Arabic is the
 default (`/`, RTL); English lives at `/en` (LTR). Theme follows the OS, with a toggle that is remembered.
 

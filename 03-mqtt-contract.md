@@ -1,11 +1,11 @@
 # 03 — Robot ↔ server MQTT contract
 
-Requirements §10 (CM-01..CM-05). Implemented server-side in `code/backend/app/fleet/mqtt_bridge.py`; the robot side
-is the `forklift_mission` fleet client in `code/ros2_ws` (not written yet). JSON Schemas for every payload are in
+Requirements §10 (CM-01..CM-05). Implemented server-side in `backend/app/fleet/mqtt_bridge.py`; the robot side
+is the `forklift_mission` fleet client in `robot/ros2_ws` (not written yet). JSON Schemas for every payload are in
 [`schemas/`](schemas/) (CM-05).
 
-Broker: Mosquitto on the server (`code/backend/docker-compose.yml`), no anonymous access, one MQTT user per robot
-named after its id (`fl1`…), ACL in `code/backend/mosquitto/acl` — a robot can only publish its own topics (CM-01).
+Broker: Mosquitto on the server (`backend/docker-compose.yml`), no anonymous access, one MQTT user per robot
+named after its id (`fl1`…), ACL in `backend/mosquitto/acl` — a robot can only publish its own topics (CM-01).
 Every message carries `seq` (per-sender counter) and `ts` (UTC ISO-8601); clocks synced with chrony (CM-04).
 
 | Topic | Dir | QoS | Retain | Schema |
@@ -39,7 +39,7 @@ Every message carries `seq` (per-sender counter) and `ts` (UTC ISO-8601); clocks
   circular waits are broken robot-side: denied for a random 2–4 s, the robot asks once more, then requests the
   first lane of a detour round the blocked node, then any free neighbour (lane node before spur) and waits there
   1–3 s before planning again. A `grant` that arrives after the robot stopped wanting that lane is handed back
-  with a `release` (reference: `code/ros2_ws/tools/mqtt_robot_client`, tested in `code/integration`).
+  with a `release` (reference: `robot/ros2_ws/tools/mqtt_robot_client`, tested in `backend/integration`).
 - **Idle robots** drive back to their home node after a short idle time (reference client: 2 s), reporting
   `idle` so they can still be given a task; otherwise a robot parked in a rack/dock spur blocks that slot.
 - **E-stop (SF-11):** `wh/fleet/estop` is retained, so a robot that (re)connects learns the state at once. While

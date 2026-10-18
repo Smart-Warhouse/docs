@@ -1,6 +1,6 @@
 # 04 — Data model (WMS)
 
-Tables follow requirements §11 "WMS — قاعدة البيانات"; defined in `code/backend/app/models.py`. Tables are created
+Tables follow requirements §11 "WMS — قاعدة البيانات"; defined in `backend/app/models.py`. Tables are created
 on server start (`create_all`); for schema changes after the first real deployment, add Alembic.
 
 | Table | Key fields | Notes |
@@ -16,7 +16,7 @@ on server start (`create_all`); for schema changes after the first real deployme
 | `users` | id, username, name, role (admin/operator/viewer), password_hash (bcrypt) | SV-07 |
 | `settings` | key, value (JSON) | runtime settings (§3.2 of the API contract) |
 
-## Lane graph (`code/backend/app/warehouse_map.yaml`)
+## Lane graph (`backend/app/warehouse_map.yaml`)
 
 6 m × 4 m floor; bottom corridor y = 0.6, top corridor y = 3.4, three aisles at x = 1.0 / 3.0 / 5.0, two racks
 (R1, R2) with 4 faces × 2 slots × 2 levels = 16 rack locations, 2 inbound docks, 2 outbound docks, 2 staging spots,

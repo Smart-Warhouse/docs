@@ -6,7 +6,7 @@ then into the thesis results chapter (date, result, notes — §14). T-08 onward
 warehouse floor and are not covered here.
 
 Tools: multimeter (two if possible), USB-C cable to a laptop, serial monitor at 115200 baud
-(`.venv\Scripts\pio device monitor -b 115200` in `code/firmware`), steel rule + tape measure, protractor,
+(`.venv\Scripts\pio device monitor -b 115200` in `robot/firmware`), steel rule + tape measure, protractor,
 matte white card (A5), stopwatch, phone with 240 fps slow-motion video, a stand that lifts the wheels off the
 ground, masking tape for floor marks.
 
@@ -26,7 +26,7 @@ ground, masking tape for floor marks.
 6. With no E-Stop wired yet, GPIO 18 must be tied to GND — and then there is **no hardware stop**: keep the
    main switch in reach instead and limit tests to wheels-off-the-ground.
 
-Console reminders (full list: `help`, [firmware README](../code/firmware/README.md#console)):
+Console reminders (full list: `help`, [firmware README](https://github.com/Smart-Warhouse/robot/blob/main/firmware/README.md#console)):
 
 | Command | Prints / does |
 |---|---|

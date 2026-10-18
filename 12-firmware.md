@@ -1,8 +1,8 @@
 # 12 — ESP32-S3 firmware
 
 Requirements §3 (pins, power), §4 (FW-01..FW-12), §9 (SF-01..SF-13) and §10 (micro-ROS topics). Code:
-`code/firmware/` — build, flash, pin map and calibration steps are in its
-[README](../code/firmware/README.md). Plan item B1.
+`robot/firmware/` — build, flash, pin map and calibration steps are in its
+[README](https://github.com/Smart-Warhouse/robot/blob/main/firmware/README.md). Plan item B1.
 
 ## 1. Structure
 

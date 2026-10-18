@@ -46,7 +46,7 @@ On the host this is **485 passing tests** (27 + 40 + 29 + 47 + 8 + 60 + 274), pl
 <!-- sum computed from the table above -->
 
 [CHECK: docs/06-backend.md still says "pytest: 20 tests" and plan.md §0 says 26 at the housekeeping commit; plan.md
-"Done so far" says 27 after the Alembic migrations. Re-run `pytest -q` in code/backend before printing and use that
+"Done so far" says 27 after the Alembic migrations. Re-run `pytest -q` in backend before printing and use that
 number everywhere.]
 
 ## 6.3 Continuous integration
@@ -103,12 +103,12 @@ training environment on 718 recorded states; URDF expansion, Nav2 footprint and 
 role gating, forms. Floor app: models, envelope and errors, map transform, hold-to-stop button, RTL smoke test, teleop
 loop. Landing: copy completeness in both languages and an "honesty" test that fails on claims such as "proven" or
 "tested results".
-<!-- docs/07-dashboard.md; code/mobile/README.md quality gate; code/landing/README.md "Honesty" -->
+<!-- docs/07-dashboard.md; mobile/README.md quality gate; landing/README.md "Honesty" -->
 
 **Training.** Environment and baseline tests; the ONNX export matches PyTorch to 6·10⁻⁷.
-<!-- code/training/README.md; plan.md B2 -->
+<!-- ai/training/README.md; plan.md B2 -->
 
-**End to end without hardware.** The reference robot client (`code/ros2_ws/tools/mqtt_robot_client`) was run against
+**End to end without hardware.** The reference robot client (`robot/ros2_ws/tools/mqtt_robot_client`) was run against
 the server over a real MQTT connection: a task completed and moved the pallet; killing the client fired the Last
 Will; killing the broker mid-task re-queued the task and recovery worked; pause/resume and fleet E-stop held.
 <!-- plan.md "Done so far"; docs/03-mqtt-contract.md -->

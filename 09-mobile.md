@@ -1,9 +1,9 @@
-# 09 — Mobile floor app (`code/mobile`, Flutter)
+# 09 — Mobile floor app (`mobile`, Flutter)
 
 The **SW Floor** app is for the people working on the warehouse floor with a phone or tablet. The control room uses
-the web dashboard (`code/dashboard`); both are clients of the same server and contract
+the web dashboard (`dashboard`); both are clients of the same server and contract
 ([02-api-contract.md](02-api-contract.md)). Visual rules come from [05-design-system.md](05-design-system.md).
-How to run and configure it: [`code/mobile/README.md`](../code/mobile/README.md).
+How to run and configure it: [`mobile/README.md`](https://github.com/Smart-Warhouse/mobile/blob/main/README.md).
 
 ## 1. Use cases ↔ requirements
 

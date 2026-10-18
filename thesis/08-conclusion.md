@@ -22,7 +22,7 @@ its hardware. The main outcomes are:
    success; behaviour cloning from the classical controller followed by conservative PPO fine-tuning and
    validation-based checkpoint selection docked **98.6 %** of 1000 test episodes in **6.4 s** on average, against
    **90.0 %** in **10.3 s** for the classical controller, passing the AI-04 gate.
-   <!-- docs/11-simulation-training.md §4; code/training/models/docking_v3/meta.json -->
+   <!-- docs/11-simulation-training.md §4; ai/training/models/docking_v3/meta.json -->
 5. **Verification without hardware.** 485 host tests across seven parts and a nine-job CI pipeline, including a ROS 2
    build and 134 colcon tests on Ubuntu 22.04 / Humble, all passing.
    <!-- Chapter 6 table; plan.md -->
