@@ -18,7 +18,7 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
       *Check:* `git status` clean; backend `pytest` (26) and training `pytest` (8) pass on the committed tree.
 - [x] Media and models committed directly to git (≈ 21 MB in total, largest file 6.8 MB — no LFS needed yet;
       move to Git LFS if videos grow past ~50 MB).
-- [x] CI workflow `.github/workflows/ci.yml`: backend, dashboard, landing, mobile, training, firmware (native tests + board build), ROS 2 host tests + colcon build in `ros:humble`. *First run: 8/9 jobs green; the colcon build is being fixed.*
+- [x] CI workflow `.github/workflows/ci.yml`: backend, dashboard, landing, mobile, training, firmware (native tests + board build), ROS 2 host tests + colcon build in `ros:humble`. *All 9 jobs green (run 4). Fixing the ROS 2 build took three rounds: rosdep keys, NumPy 2 vs Ubuntu's OpenCV, and ArUco corner accuracy on OpenCV 4.5.*
 - [x] Create the GitHub repository and push: private `AhmedITD/smart-warehouse-fleet`.
 
 ---
@@ -117,7 +117,7 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 
 ### B4. ROS 2 packages — `code/ros2_ws` (requirements §5–§9)
 
-> **Status 2026-10-18:** all nine packages written; logic lives in rclpy-free modules, host tests **274 pass, 1 skipped** (MQTT client validated against `docs/schemas`, ArUco ≤ 1 cm / ≤ 2° at ≤ 50 cm on rendered markers, RL observation identical to the training env on 718 recorded states). **Not yet built with colcon or run on ROS** — the `ros2-colcon-build` CI job does the first build. Boxes below tick when they run on Ubuntu/hardware. Details: [docs/13-ros2.md](docs/13-ros2.md).
+> **Status 2026-10-18:** all nine packages written; logic lives in rclpy-free modules, host tests **274 pass, 1 skipped** (MQTT client validated against `docs/schemas`, ArUco ≤ 1 cm / ≤ 2° at ≤ 50 cm on rendered markers, RL observation identical to the training env on 718 recorded states). **`colcon build` + `colcon test` pass on Ubuntu 22.04 / Humble in CI (134 tests)**; not yet run as live nodes or on hardware. Boxes below tick when they run on Ubuntu/hardware. Details: [docs/13-ros2.md](docs/13-ros2.md).
 
 - [ ] `forklift_description`: URDF/Xacro with the measured dimensions and sensor frames; full TF tree (JS-06).
 - [ ] `forklift_interfaces`: Lift, Task, Status messages/services/actions.
@@ -192,5 +192,5 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
   Python broker.
 - `code/training` — MuJoCo docking simulator, classical baseline, imitation + PPO policy passing AI-04, ONNX export.
 - `code/firmware` — ESP32-S3 firmware: 60 host tests, board build OK (micro-ROS build needs Linux).
-- `code/ros2_ws` — nine ROS 2 packages: 274 host tests (colcon build pending).
+- `code/ros2_ws` — nine ROS 2 packages: 274 host tests; colcon build + 134 colcon tests green in CI.
 - `code/backend` — Alembic migrations (27 tests); `.github/workflows/ci.yml` for every part.

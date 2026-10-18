@@ -34,7 +34,7 @@ Source: [system-requirements.md](00-sources/system-requirements.md) and [project
 | `code/landing` | Public project website (React + Vite, static) | built |
 | `code/mobile` | Floor operator app: stop-all, alerts, fleet, tasks, manual drive (Flutter) | built |
 | `code/firmware` | ESP32-S3 firmware (PlatformIO, FreeRTOS, micro-ROS) — §4 | written, host-tested, board build OK |
-| `code/ros2_ws` | ROS 2 Humble packages on the Jetson — §5–§9 | written, host-tested; colcon build pending |
+| `code/ros2_ws` | ROS 2 Humble packages on the Jetson — §5–§9 | written, host-tested, colcon build + tests green in CI |
 | `code/training` | Docking simulator (MuJoCo + Gymnasium), classical baseline, imitation + PPO training — §8 | built, tested |
 
 ## Why the server is independent of ROS
