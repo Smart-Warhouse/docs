@@ -11,13 +11,13 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 
 ## 0. Housekeeping — do first
 
-- [ ] Commit everything not yet in git: the MQTT robot-client session's backend fixes
+- [x] Commit everything not yet in git (commit 9cc85c5): the MQTT robot-client session's backend fixes
       (`code/backend/app/fleet/manager.py`, `mqtt_bridge.py`, `tests/test_mqtt_bridge.py`), the reference client
       (`code/ros2_ws/tools/mqtt_robot_client/`), the training simulator (`code/training/`), `docs/11-simulation-training.md`
       and `docs/media/` (videos + screenshots).
       *Check:* `git status` clean; backend `pytest` (26) and training `pytest` (8) pass on the committed tree.
-- [ ] Decide whether the trained model files and videos go into git or into GitHub Releases / Git LFS
-      (`docs/media/` ≈ 15 MB, `models/` a few MB).
+- [x] Media and models committed directly to git (≈ 21 MB in total, largest file 6.8 MB — no LFS needed yet;
+      move to Git LFS if videos grow past ~50 MB).
 - [ ] Create the GitHub repository and push (monorepo layout from NFR-10).
 
 ---
