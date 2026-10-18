@@ -18,8 +18,8 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
       *Check:* `git status` clean; backend `pytest` (26) and training `pytest` (8) pass on the committed tree.
 - [x] Media and models committed directly to git (≈ 21 MB in total, largest file 6.8 MB — no LFS needed yet;
       move to Git LFS if videos grow past ~50 MB).
-- [x] CI workflow `.github/workflows/ci.yml`: backend, dashboard, landing, mobile, training, firmware (native tests + board build), ROS 2 host tests + colcon build in `ros:humble`. *Has not run yet — needs the GitHub repo.*
-- [ ] Create the GitHub repository and push (monorepo layout from NFR-10).
+- [x] CI workflow `.github/workflows/ci.yml`: backend, dashboard, landing, mobile, training, firmware (native tests + board build), ROS 2 host tests + colcon build in `ros:humble`. *First run: 8/9 jobs green; the colcon build is being fixed.*
+- [x] Create the GitHub repository and push: private `AhmedITD/smart-warehouse-fleet`.
 
 ---
 
@@ -33,7 +33,6 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 | YOLO training data (B6) | Needs the real camera mounted on the forklift | Hardware |
 | Test Mosquitto logins + ACL for real (CM-01, B7) | Docker Desktop's engine is not responding | Restart or repair Docker Desktop |
 | Camera stream for manual control (UI-08) | Needs a stream from the Jetson | Hardware |
-| GitHub repository + push | Publishes the code, so it needs your OK | Say "yes" and private or public |
 | Landing page: team names, supervisor, university, domain, real photos | Claude does not have this information | Send the details (TODOs in `code/landing/src/i18n/copy/`) |
 | Flutter release signing, test on a real phone | Needs your signing keys and a device | You |
 
