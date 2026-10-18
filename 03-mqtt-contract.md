@@ -35,7 +35,13 @@ Every message carries `seq` (per-sender counter) and `ts` (UTC ISO-8601); clocks
   the robot publishes `{"robot_id":"fl1","action":"request"}`; the server answers on the same topic with
   `grant` or `deny` (a robot ignores answers addressed to another `robot_id`). Granted = the lane *and* the far
   node are locked for that robot. On arrival the robot publishes `release`, which frees the lane and the node it
-  left. On `deny` the robot waits and re-requests every 500 ms.
+  left. On `deny` the robot waits and re-requests every 500 ms. The server never re-routes a real robot, so
+  circular waits are broken robot-side: denied for a random 2–4 s, the robot asks once more, then requests the
+  first lane of a detour round the blocked node, then any free neighbour (lane node before spur) and waits there
+  1–3 s before planning again. A `grant` that arrives after the robot stopped wanting that lane is handed back
+  with a `release` (reference: `code/ros2_ws/tools/mqtt_robot_client`, tested in `code/integration`).
+- **Idle robots** drive back to their home node after a short idle time (reference client: 2 s), reporting
+  `idle` so they can still be given a task; otherwise a robot parked in a rack/dock spur blocks that slot.
 - **E-stop (SF-11):** `wh/fleet/estop` is retained, so a robot that (re)connects learns the state at once. While
   `engaged` the robot must hold `cmd_vel = 0` until it sees `engaged: false`.
 - **Task flow:** `task` → robot replies `task_status` `accepted` → `to_pickup` → `picking` → `to_drop` → `dropping`

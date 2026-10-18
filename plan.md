@@ -2,7 +2,7 @@
 
 Living plan. Tick a box when its acceptance check passes, not when the code is written. Requirement ids
 (FR-, SF-, AI-, T-…) refer to [docs/00-sources/system-requirements.md](docs/00-sources/system-requirements.md).
-Last updated: 2026-10-18 (firmware, ROS 2, ONNX export, migrations, CI).
+Last updated: 2026-10-18 (hardware-free work packages, safety fix, brand, team section).
 
 The hardware track is the critical path: phases 1–4 run on **one** forklift, then the other two are copied in
 phase 5 (requirements §15). Software that needs no hardware runs in parallel.
@@ -63,14 +63,15 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
       *Check:* AI-04 gate ≥ 95 % in `meta.json`.
 
 ### A3. Mechanics (ME-03 … ME-14)
-- [ ] CAD + 3D-print mounts: LiDAR on the overhead guard, camera on the fork carriage (15–25° down),
+- [ ] CAD + 3D-print mounts *(CAD done: 18 parametric CadQuery parts in `code/cad`, 79 tests; 41 dimensions are
+      placeholders → re-run `build.py` after ME-01, then print — [docs/14](docs/14-hardware-build.md))*: LiDAR on the overhead guard, camera on the fork carriage (15–25° down),
       6 ToF mounts, electronics box with ventilation, battery tray low at the rear, E-Stop at the rear top.
 - [ ] Fit AS5600 + magnet on the drive axle, slide pot + limit switches on the mast, TCRT5000 on the fork tips.
 - [ ] Balance test with the heaviest pallet at full height and minimum turning radius (ME-13).
 - [ ] Weigh all add-ons (target ≤ 700 g, ME-14).
 
 ### A4. Electronics and power (EL-01 … EL-10)
-- [ ] Wire the power tree: battery → BMS → 5 A fuse → main switch → Boost 12 V (Jetson) / Buck 5.1 V (logic) /
+- [ ] Wire the power tree *(wiring diagram + pin map ready: [docs/14](docs/14-hardware-build.md); bench procedures T-01…T-07: [docs/15](docs/15-bench-tests.md))*: battery → BMS → 5 A fuse → main switch → Boost 12 V (Jetson) / Buck 5.1 V (logic) /
       E-Stop (NC) → motor drivers.
 - [ ] Perfboard prototype; check every rail with a multimeter before connecting.
 - [ ] Verify the ESP32-S3 Zero pin map against the real board (no strapping / PSRAM pins).
@@ -133,21 +134,35 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 - [ ] rosbag recording of every run (JS-08).
 
 ### B5. Full-system simulation — `code/ros2_ws/forklift_sim` (AI-01)
-- [ ] Gazebo Harmonic world built from the warehouse map (EN-11) + forklift model with LiDAR, camera, IMU.
+
+> **Status 2026-10-18:** Gazebo **Fortress** digital twin (the supported pairing for Humble) runs headless in CI
+> (`sim.yml`): world generated from `warehouse_map.yaml`, LiDAR/camera/IMU/odom rates checked, a Nav2 goal reached within
+> 4 cm; two Nav2 config bugs fixed on the way. Being merged into the robot repo in the org move.
+
+- [x] Gazebo world built from the warehouse map (EN-11) + forklift model with LiDAR, camera, IMU *(Fortress, not Harmonic)*.
 - [ ] Run Nav2 + mission + the fleet server against simulated forklifts (server `simulated: false`, MQTT on).
 - [ ] Optional: Isaac Lab if an RTX GPU with ≥ 8 GB is available (this laptop's RTX 4050 has 6 GB).
 
 ### B6. Perception data (needs the real camera)
+
+> **Status 2026-10-18:** pipeline ready in `code/vision` (capture, dataset checker, 70/20/10 split, CVAT/Roboflow import,
+> training, ONNX export, onnxruntime wrapper for the ROS node; 40 tests). Starter model on public + synthetic data
+> (NOT the PC-08 result): mAP@0.5 0.848, person recall 0.68 — the real camera data is what reaches PC-08. [docs/16](docs/16-vision.md)
+
 - [ ] Collect ≥ 400 images per class (`person`, `pallet`, `forklift`, `obstacle`) from the forklift camera,
       label in Roboflow/CVAT, split 70/20/10.
 - [ ] Train YOLOv8n/v11n, export TensorRT FP16. *Check:* mAP@0.5 ≥ 0.85, person recall ≥ 0.95, ≤ 30 ms (T-11).
 
 ### B7. Server and apps — remaining items
-- [ ] Test Mosquitto authentication + ACL for real (needs Docker Desktop working) (CM-01).
+- [x] Test Mosquitto authentication + ACL for real (CM-01) *(`code/integration`: 9 tests incl. ACL denial, Last Will
+      re-queue, retained E-stop, broker restart, 3 robots × 20 tasks; runs against a real Mosquitto container in CI;
+      locally 9/9 on the in-repo broker — [docs/17](docs/17-integration-tests.md))*.
 - [x] Add Alembic migrations before the first real deployment *(migration 0001 = current schema; the server upgrades on start-up and stamps old dev databases without losing data; tested)*.
-- [ ] Camera stream for manual control (UI-08) — needs a stream from the Jetson.
+- [x] Camera stream for manual control (UI-08) *(MJPEG streamer package `forklift_camera_stream` → authenticated
+      server relay `/api/robots/{id}/camera` → dashboard viewer; tested on the laptop webcam; on the Jetson it reads the fork camera)*.
 - [ ] Release signing for the Flutter app; run it on a real phone.
-- [ ] Landing page: team names, supervisor, university, real photos, domain (TODOs in `code/landing/src/i18n/copy/`).
+- [ ] Landing page: team names, supervisor, university, domain *(Team section with the three photos is live, Ahmed
+      in the middle; the other two names are still "to be added" — TODO in `code/landing/src/i18n/copy/`)*.
 
 ---
 
@@ -172,8 +187,12 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
       ([docs/11-simulation-training.md](docs/11-simulation-training.md)); Hungarian vs nearest allocation
       ≈ 300 vs ≈ 210 tasks/h in the fleet simulator ([docs/06-backend.md](docs/06-backend.md)).
 - [x] Demo material in `docs/media/`: dashboard videos (dark, light), simulation walkthrough, RL docking video, screenshots.
-- [ ] Write the simulation chapter: environment design, why plain PPO and curriculum failed, imitation + PPO,
+- [x] Thesis chapters 1–8 drafted in `docs/thesis/` + demo script + 15-slide defence deck
+      (https://claude.ai/artifact/SMrvxUx6hZ3rMrHL4nJYG2) — the team must review every `[CHECK]` item.
+- [x] Write the simulation chapter: environment design, why plain PPO and curriculum failed, imitation + PPO,
       checkpoint selection, results table.
+- [x] Allocation study (AI-08): 270 runs, 15 seeds, 2–4 robots, 3 task rates. Same at low load; when saturated Hungarian
+      does 53–67 % more tasks/h (328 vs 211 with 3 robots) but can starve far tasks — [docs/18](docs/18-allocation-study.md).
 - [ ] Re-run the allocation comparison on the real map with real robot speeds.
 - [ ] Replace design targets with measured numbers on the landing page as tests pass.
 - [ ] Defence demo: kiosk mode on a big screen + the floor app + live forklifts (fallback: simulator).
@@ -193,4 +212,8 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 - `code/training` — MuJoCo docking simulator, classical baseline, imitation + PPO policy passing AI-04, ONNX export.
 - `code/firmware` — ESP32-S3 firmware: 60 host tests, board build OK (micro-ROS build needs Linux).
 - `code/ros2_ws` — nine ROS 2 packages: 274 host tests; colcon build + 134 colcon tests green in CI.
-- `code/backend` — Alembic migrations (27 tests); `.github/workflows/ci.yml` for every part.
+- `code/backend` — Alembic migrations, camera relay, livelock fix (40 tests); `.github/workflows/ci.yml` for every part.
+- Safety: firmware SF-03 docking mask fixed (the original centre-only mask blocked every docking in simulation;
+  now all three front sensors are ignored while docking — 98.7 % docked with the full safety stack, re-evaluated).
+- `code/cad`, `code/vision`, `code/integration`, `code/experiments/allocation` — see docs 14–18.
+- Brand: approved kit (Concept 01) in `docs/brand/`, applied to the dashboard, landing page and app icons.

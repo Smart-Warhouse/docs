@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <title>SW·Fleet</title>
+  <!-- Concept 01 symbol (docs/brand/logo/symbol.svg) with the kit's reversed colours when the browser is dark -->
+  <style>
+    .s { fill: #0C161E } .b { fill: #0F4C5C } .d { fill: #FFFFFF }
+    @media (prefers-color-scheme: dark) { .s { fill: #FFFFFF } .b { fill: #5DBACB } .d { fill: #0C161E } }
+  </style>
+  <path class="s" d="M82 53 L129 25 L224 81 L224 156 L195 156 L195 97 L129 59 L103 77 Q90 72 82 53 Z"/>
+  <path class="s" d="M66 66 L66 115 L58 120 L58 196 L28 208 L28 91 Z"/>
+  <path class="b" d="M84 174 L123 174 Q127 174 127 178 L127 197 L84 197 Z"/>
+  <path class="b" d="M161 108 Q161 103 166 103 L179 103 Q184 103 184 108 L184 224 L161 224 Z"/>
+  <rect class="b" x="189" y="165" width="43" height="59" rx="10"/>
+  <circle class="d" cx="211" cy="182" r="5.5"/>
+  <path d="M81 60 L81 102 Q81 116 96 124 L139 144 Q150 150 150 162 L150 193 Q150 208 134 208 L57 208 Q43 208 34 224" fill="none" stroke="#F5B400" stroke-width="19" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="29" cy="229" r="20" fill="#F5B400"/><circle cx="29" cy="229" r="7" fill="#FFFFFF"/>
+</svg>

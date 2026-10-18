@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1040" height="265" viewBox="0 0 1040 265">
+    <title>SW·Fleet — Smart Warehouse / المخزن الذكي</title>
+    
+    <g transform="translate(30 14) scale(.94)">
+    <!-- Roof of warehouse, left bay, route-and-fork system: concept 01 -->
+    <path d="M82 53 L129 25 L224 81 L224 156 L195 156 L195 97 L129 59 L103 77 Q90 72 82 53 Z" fill="#0C161E"/>
+    <path d="M66 66 L66 115 L58 120 L58 196 L28 208 L28 91 Z" fill="#0C161E"/>
+    <path d="M84 174 L123 174 Q127 174 127 178 L127 197 L84 197 Z" fill="#0F4C5C"/>
+    <path d="M161 108 Q161 103 166 103 L179 103 Q184 103 184 108 L184 224 L161 224 Z" fill="#0F4C5C"/>
+    <rect x="189" y="165" width="43" height="59" rx="10" fill="#0F4C5C"/>
+    <circle cx="211" cy="182" r="5.5" fill="#FFFFFF"/>
+    <!-- Forklift route is an S-shaped continuous trajectory ending at a control node -->
+    <path d="M81 60 L81 102 Q81 116 96 124 L139 144 Q150 150 150 162 L150 193 Q150 208 134 208 L57 208 Q43 208 34 224" fill="none" stroke="#F5B400" stroke-width="19" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="29" cy="229" r="20" fill="#F5B400"/><circle cx="29" cy="229" r="7" fill="#FFFFFF"/>
+    </g>
+    <text x="292" y="112" font-family="Noto Kufi Arabic" font-size="53" font-weight="700" fill="#0C161E" direction="rtl" text-anchor="end">المخزن الذكي</text>
+    <text x="297" y="173" font-family="DejaVu Sans" font-weight="700" font-size="40" fill="#0C161E">Smart Warehouse</text>
+    <text x="299" y="215" font-family="DejaVu Sans" font-size="23" letter-spacing="6" fill="#0F4C5C">SW·Fleet</text>
+
+    </svg>

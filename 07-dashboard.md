@@ -16,9 +16,33 @@ nothing the server does not (every role/state check is a UX mirror; the server s
 | `inventory` | Rack grid grouped by rack and level (top level first) with what is in each slot; SKU search; pallet drawer with movement history; register pallet | **UI-04**, SV-09 | `GET /api/locations`, `GET /api/pallets?q=`, `GET /api/pallets/{id}/moves`, `POST /api/pallets`, `GET /api/products`; WS `inventory` |
 | `analytics` | 24 h / 7 d / custom range; KPI tiles (done, success rate, avg task time, avg lane wait); tasks-per-hour bars; per-robot utilization; congestion heat map drawn on the warehouse map; events by code; CSV export (tasks, events); PDF = print stylesheet | **UI-05**, **UI-10** (export), FR-11 | `GET /api/analytics/summary?from&to`, `GET /api/analytics/export?kind&from&to` (authed blob download) |
 | `events` | Log with type / severity / robot filters, paging, live prepend from WS; critical events → toast + short WebAudio beep anywhere in the app (mute in the top bar) | **UI-06**, **SF-13** | `GET /api/events`, WS `event` |
-| `manual` | Pick robot → switch to manual → drive with the browser Gamepad API (left stick y = v, x = ω; Y / d-pad-up lift up, A / d-pad-down lift down), on-screen pad or keyboard (WASD / arrows, E / Q); speed-limit slider; clamped `limited_v` shown; camera panel ("no camera stream configured") | **UI-08**, FR-10, SF-07 | `POST /api/robots/{id}/mode`, `POST /api/robots/{id}/teleop` |
+| `manual` | Pick robot → switch to manual → drive with the browser Gamepad API (left stick y = v, x = ω; Y / d-pad-up lift up, A / d-pad-down lift down), on-screen pad or keyboard (WASD / arrows, E / Q); speed-limit slider; clamped `limited_v` shown; **camera panel**: low-res MJPEG of the fork camera while the robot is in manual mode (status badge Connecting / Live / Reconnecting, manual reconnect; see §1.1) | **UI-08**, FR-10, SF-07 | `POST /api/robots/{id}/mode`, `POST /api/robots/{id}/teleop`, `GET /api/robots/{id}/camera/info`, `GET /api/robots/{id}/camera` |
 | `settings` (admin) | Limits form (PATCH only changed fields), locations table add / edit, users list / add / delete, **Simulator** panel (person, obstacle, drain battery, disconnect, N random tasks) | **UI-09**, SV-06 | `GET/PATCH /api/settings`, `GET/POST/PATCH /api/locations`, `GET/POST/DELETE /api/users`, `POST /api/sim/scenario` |
 | `kiosk` (also `/kiosk`) | Dark, no sidebar: full-bleed map + robot strip + fleet KPIs + live event ticker; Stop-all still visible | **UI-10** | same as the map + WS `event` |
+
+### 1.1 Manual-control camera (UI-08)
+
+`features/manual/CameraPanel.tsx` + `useCameraStream.ts` + `mjpeg.ts`. The browser never talks to a robot: it reads
+the server relay `GET /api/robots/{id}/camera` with `fetch` (bearer header, so the JWT never lands in a URL or an
+access log), parses the `multipart/x-mixed-replace` body itself and shows each JPEG in an `<img>` via a blob URL
+(the previous one is revoked). A plain `<img src=…mjpg>` was tried first and dropped: Chrome fires `load` only for
+the first part, so a dead stream looks live forever, the HTTP error code is invisible, and a removed `<img>` keeps
+its connection (the robot kept encoding for nobody).
+
+- **One connection at most**, opened only when a robot is picked, it has a camera, the user is operator+, the robot is
+  enabled, online and in **manual** mode, and the tab is visible. Hiding the tab or leaving manual mode aborts the
+  fetch; the server then closes the robot connection and the robot stops encoding (checked live: robot viewer count
+  1 → 0).
+- **States**: Connecting → Live on the first frame; a failed request (envelope `code` shown, e.g.
+  `camera_unreachable`) or **no frame for 5 s** → Reconnecting with the live-socket backoff 1 / 2 / 5 / 10 s, the
+  last frame kept on screen; Paused while the tab is hidden; a Reconnect button forces a fresh stream.
+- **Empty states, each explained**: no robot picked; robot has no camera (`camera_url` missing in
+  `warehouse_map.yaml`); viewer role; robot disabled / offline; not in manual mode ("Switch the robot to manual to
+  watch its fork camera"). `camera/info` is re-fetched after every failure to keep the reason current.
+- Local demo: [`docs/media/screenshots/07b-manual-control-camera.png`](media/screenshots/07b-manual-control-camera.png)
+  (laptop webcam through the standalone streamer → server relay → dashboard, fl1 in manual mode). Run it with
+  `python -m forklift_camera_stream.standalone --source 0` (or `--source test` without a webcam) in
+  `code/ros2_ws/src/forklift_camera_stream`; fl1's `camera_url` already points at `http://127.0.0.1:8081/stream.mjpg`.
 
 Role gating (SV-07): **viewer** sees everything read-only (write buttons visible but disabled with "Requires the
 Operator role"); **operator** gets tasks, robot commands, E-stop / release, manual control, pallet registration;
