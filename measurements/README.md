@@ -10,6 +10,8 @@ Every size of the forklift in the code is a **guess** right now. Only the box si
 | `robot/ros2_ws/.../dimensions.yaml`, `nav2_params.yaml` | the robot model, the footprint, the turning radius |
 | `robot/firmware/.../config.h` | wheelbase, steering limit, lift range, speed |
 
+A printable copy is in [forklift-measurements.pdf](forklift-measurements.pdf).
+
 You measure; I put each number in all the right files, retrain the docking AI (about 15 minutes) and re-draw the
 mounts. **You don't need to edit any code.**
 
