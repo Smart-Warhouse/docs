@@ -78,4 +78,4 @@ its hardware. The main outcomes are:
 
 ## Acknowledgements
 
-[TEAM: thank [SUPERVISOR], [DEPARTMENT], [UNIVERSITY] and anyone who helped.]
+[TEAM: thank Prof. Dr. Maher Yahya Salloom, [DEPARTMENT], University of Baghdad and anyone who helped.]

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="Segoe UI, Arial, sans-serif" font-size="15">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#C0392B"/>
+    </marker>
+    <style>
+      .body{fill:#F2B33D;stroke:#124A5A;stroke-width:2}
+      .metal{fill:#5B6B73;stroke:#124A5A;stroke-width:2}
+      .roof{fill:none;stroke:#124A5A;stroke-width:2}
+      .bar{fill:#124A5A}
+      .wheel{fill:#2B2B2B}
+      .dim{stroke:#C0392B;stroke-width:1.8;fill:none;marker-start:url(#a);marker-end:url(#a)}
+      .ext{stroke:#C0392B;stroke-width:1;stroke-dasharray:3 3}
+      .tag circle{fill:#124A5A}
+      .tag text{fill:#fff;font-weight:700;text-anchor:middle;dominant-baseline:central}
+      .note{fill:#5B6B73;font-size:13}
+      .h{font-size:20px;font-weight:700;fill:#124A5A}
+    </style>
+  </defs>
+  <rect width="960" height="520" fill="#FFFFFF"/>
+
+  <!-- ===== top view ===== -->
+  <text x="24" y="34" class="h">Top view — forks to the right</text>
+  <!-- wheels -->
+  <rect class="wheel" x="140" y="96" width="70" height="26" rx="5"/>
+  <rect class="wheel" x="140" y="318" width="70" height="26" rx="5"/>
+  <rect class="wheel" x="340" y="96" width="70" height="26" rx="5"/>
+  <rect class="wheel" x="340" y="318" width="70" height="26" rx="5"/>
+  <!-- body -->
+  <rect class="body" x="70" y="110" width="360" height="220" rx="14"/>
+  <!-- carriage -->
+  <rect class="metal" x="430" y="130" width="14" height="180"/>
+  <!-- forks -->
+  <rect class="metal" x="444" y="152" width="230" height="38"/>
+  <rect class="metal" x="444" y="250" width="230" height="38"/>
+  <!-- overhead guard roof with bars -->
+  <rect class="roof" x="230" y="140" width="150" height="160"/>
+  <rect class="bar" x="230" y="140" width="150" height="9"/>
+  <rect class="bar" x="230" y="185" width="150" height="9"/>
+  <rect class="bar" x="230" y="230" width="150" height="9"/>
+  <rect class="bar" x="230" y="275" width="150" height="9"/>
+  <text x="305" y="318" class="note" text-anchor="middle">guard roof</text>
+
+  <!-- W body width (known) -->
+  <line x1="70" y1="110" x2="40" y2="110" class="ext"/><line x1="70" y1="330" x2="40" y2="330" class="ext"/>
+  <line class="dim" x1="48" y1="112" x2="48" y2="328"/>
+  <text x="40" y="226" class="note" text-anchor="end" transform="rotate(-90 40 226)">187 mm (known)</text>
+  <!-- L fork spacing centre to centre -->
+  <line x1="674" y1="171" x2="760" y2="171" class="ext"/><line x1="674" y1="269" x2="760" y2="269" class="ext"/>
+  <line class="dim" x1="750" y1="173" x2="750" y2="267"/>
+  <g class="tag"><circle cx="750" cy="220" r="13"/><text x="750" y="220">L</text></g>
+  <text x="770" y="224" class="note">centre to centre</text>
+  <!-- M fork width -->
+  <line x1="674" y1="152" x2="720" y2="152" class="ext"/><line x1="674" y1="190" x2="720" y2="190" class="ext"/>
+  <line class="dim" x1="710" y1="128" x2="710" y2="150"/>
+  <line class="dim" x1="710" y1="214" x2="710" y2="192"/>
+  <g class="tag"><circle cx="730" cy="128" r="13"/><text x="730" y="128">M</text></g>
+  <!-- N, O roof size -->
+  <line x1="230" y1="140" x2="230" y2="72" class="ext"/><line x1="380" y1="140" x2="380" y2="72" class="ext"/>
+  <line class="dim" x1="232" y1="80" x2="378" y2="80"/>
+  <g class="tag"><circle cx="305" cy="80" r="13"/><text x="305" y="80">N</text></g>
+  <line x1="380" y1="140" x2="420" y2="140" class="ext"/><line x1="380" y1="300" x2="420" y2="300" class="ext"/>
+  <line class="dim" x1="410" y1="142" x2="410" y2="298"/>
+  <g class="tag"><circle cx="410" cy="220" r="13"/><text x="410" y="220">O</text></g>
+  <!-- P bar width, Q bar pitch -->
+  <line x1="230" y1="185" x2="200" y2="185" class="ext"/><line x1="230" y1="194" x2="200" y2="194" class="ext"/>
+  <g class="tag"><circle cx="186" cy="176" r="13"/><text x="186" y="176">P</text></g>
+  <text x="120" y="160" class="note">bar width</text>
+  <line x1="230" y1="234" x2="190" y2="234" class="ext"/>
+  <line class="dim" x1="200" y1="191" x2="200" y2="232"/>
+  <g class="tag"><circle cx="186" cy="214" r="13"/><text x="186" y="214">Q</text></g>
+  <text x="96" y="252" class="note">bar centre to centre</text>
+
+  <!-- ===== front view of forks in a pallet ===== -->
+  <text x="24" y="400" class="h">Front view of the forks (looking at the fork tips)</text>
+  <line x1="40" y1="500" x2="560" y2="500" stroke="#124A5A" stroke-width="2"/>
+  <rect class="metal" x="180" y="472" width="56" height="22"/>
+  <rect class="metal" x="340" y="472" width="56" height="22"/>
+  <!-- R thickness -->
+  <line x1="396" y1="472" x2="450" y2="472" class="ext"/><line x1="396" y1="494" x2="450" y2="494" class="ext"/>
+  <line class="dim" x1="440" y1="448" x2="440" y2="470"/>
+  <line class="dim" x1="440" y1="518" x2="440" y2="496"/>
+  <g class="tag"><circle cx="462" cy="452" r="13"/><text x="462" y="452">R</text></g>
+  <text x="480" y="456" class="note">fork thickness</text>
+  <!-- M width again -->
+  <line x1="180" y1="472" x2="180" y2="436" class="ext"/><line x1="236" y1="472" x2="236" y2="436" class="ext"/>
+  <line class="dim" x1="182" y1="444" x2="234" y2="444"/>
+  <g class="tag"><circle cx="208" cy="426" r="13"/><text x="208" y="426">M</text></g>
+  <!-- H clearance -->
+  <line x1="120" y1="494" x2="180" y2="494" class="ext"/>
+  <g class="tag"><circle cx="110" cy="494" r="13"/><text x="110" y="494">H</text></g>
+  <text x="60" y="470" class="note">gap to floor</text>
+
+  <!-- side note -->
+  <text x="600" y="430" class="note">Calipers for L, M, R, P (mm, 1 decimal).</text>
+  <text x="600" y="452" class="note">Measure L between the CENTRES of the forks:</text>
+  <text x="600" y="472" class="note">outer edge to outer edge minus one fork width.</text>
+</svg>

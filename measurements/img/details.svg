@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" font-family="Segoe UI, Arial, sans-serif" font-size="15">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#C0392B"/>
+    </marker>
+    <style>
+      .body{fill:#F2B33D;stroke:#124A5A;stroke-width:2}
+      .metal{fill:#5B6B73;stroke:#124A5A;stroke-width:2}
+      .cut{fill:#DCE3E6;stroke:#124A5A;stroke-width:2}
+      .dim{stroke:#C0392B;stroke-width:1.8;fill:none;marker-start:url(#a);marker-end:url(#a)}
+      .ext{stroke:#C0392B;stroke-width:1;stroke-dasharray:3 3}
+      .tag circle{fill:#124A5A}
+      .tag text{fill:#fff;font-weight:700;text-anchor:middle;dominant-baseline:central}
+      .note{fill:#5B6B73;font-size:13}
+      .h{font-size:17px;font-weight:700;fill:#124A5A}
+      .panel{fill:none;stroke:#DCE3E6;stroke-width:1.5}
+    </style>
+  </defs>
+  <rect width="960" height="620" fill="#FFFFFF"/>
+
+  <!-- ===== 1. drive axle (for the AS5600 encoder) ===== -->
+  <rect class="panel" x="12" y="12" width="460" height="290" rx="8"/>
+  <text x="28" y="40" class="h">1 · Drive axle end (encoder magnet goes here)</text>
+  <!-- chassis side face -->
+  <rect class="body" x="40" y="70" width="40" height="200"/>
+  <text x="60" y="290" class="note" text-anchor="middle">chassis face</text>
+  <!-- axle stub sticking out -->
+  <rect class="metal" x="80" y="160" width="110" height="20"/>
+  <!-- end view of the axle with D flat -->
+  <circle class="cut" cx="360" cy="170" r="40"/>
+  <rect x="384" y="128" width="20" height="84" fill="#FFFFFF"/>
+  <line x1="384" y1="135" x2="384" y2="205" stroke="#124A5A" stroke-width="2"/>
+  <text x="360" y="240" class="note" text-anchor="middle">end view of the axle</text>
+  <!-- S diameter -->
+  <line x1="320" y1="130" x2="290" y2="130" class="ext"/><line x1="320" y1="210" x2="290" y2="210" class="ext"/>
+  <line class="dim" x1="298" y1="132" x2="298" y2="208"/>
+  <g class="tag"><circle cx="276" cy="170" r="13"/><text x="276" y="170">S</text></g>
+  <!-- T flat depth -->
+  <line x1="384" y1="110" x2="384" y2="128" class="ext"/><line x1="400" y1="110" x2="400" y2="160" class="ext"/>
+  <line class="dim" x1="372" y1="112" x2="382" y2="112" style="marker-start:none"/><line class="dim" x1="412" y1="112" x2="402" y2="112" style="marker-start:none"/>
+  <g class="tag"><circle cx="424" cy="104" r="13"/><text x="424" y="104">T</text></g>
+  <text x="372" y="275" class="note" text-anchor="middle">T = depth of the flat side (0 if round)</text>
+  <!-- U axle end to chassis face -->
+  <line x1="190" y1="180" x2="190" y2="214" class="ext"/>
+  <line class="dim" x1="82" y1="206" x2="188" y2="206"/>
+  <g class="tag"><circle cx="135" cy="226" r="13"/><text x="135" y="226">U</text></g>
+  <!-- V axle height above the face the bracket sits on -->
+  <line x1="80" y1="250" x2="230" y2="250" class="ext"/>
+  <line x1="190" y1="170" x2="230" y2="170" class="ext"/>
+  <line class="dim" x1="222" y1="172" x2="222" y2="248"/>
+  <g class="tag"><circle cx="244" cy="226" r="13"/><text x="244" y="226">V</text></g>
+
+  <!-- ===== 2. mast rail + carriage bar cross sections ===== -->
+  <rect class="panel" x="488" y="12" width="460" height="290" rx="8"/>
+  <text x="504" y="40" class="h">2 · Mast rail and carriage bar (cut through)</text>
+  <!-- mast channel -->
+  <path class="cut" d="M540 90 L620 90 L620 110 L560 110 L560 200 L620 200 L620 220 L540 220 Z"/>
+  <text x="580" y="250" class="note" text-anchor="middle">outer mast upright</text>
+  <line x1="540" y1="220" x2="540" y2="236" class="ext"/>
+  <line x1="620" y1="220" x2="620" y2="236" class="ext"/>
+  <line x1="540" y1="90" x2="520" y2="90" class="ext"/><line x1="540" y1="220" x2="520" y2="220" class="ext"/>
+  <line x1="540" y1="90" x2="540" y2="66" class="ext"/><line x1="620" y1="90" x2="620" y2="66" class="ext"/>
+  <line class="dim" x1="542" y1="72" x2="618" y2="72"/>
+  <g class="tag"><circle cx="580" cy="72" r="13"/><text x="580" y="72">X</text></g>
+  <line x1="620" y1="90" x2="650" y2="90" class="ext"/><line x1="620" y1="220" x2="650" y2="220" class="ext"/>
+  <line class="dim" x1="642" y1="92" x2="642" y2="218"/>
+  <g class="tag"><circle cx="642" cy="155" r="13"/><text x="642" y="155">Y</text></g>
+  <text x="504" y="280" class="note">X = depth (front to back), Y = width (side to side)</text>
+  <!-- carriage bar -->
+  <rect class="cut" x="780" y="120" width="40" height="70"/>
+  <text x="800" y="220" class="note" text-anchor="middle">carriage cross bar</text>
+  <text x="800" y="236" class="note" text-anchor="middle">(the camera clamps on it)</text>
+  <line x1="780" y1="120" x2="780" y2="96" class="ext"/><line x1="820" y1="120" x2="820" y2="96" class="ext"/>
+  <line class="dim" x1="782" y1="102" x2="818" y2="102"/>
+  <g class="tag"><circle cx="800" cy="82" r="13"/><text x="800" y="82">Z1</text></g>
+  <line x1="820" y1="120" x2="860" y2="120" class="ext"/><line x1="820" y1="190" x2="860" y2="190" class="ext"/>
+  <line class="dim" x1="852" y1="122" x2="852" y2="188"/>
+  <g class="tag"><circle cx="876" cy="155" r="13"/><text x="876" y="155">Z2</text></g>
+
+  <!-- ===== 3. space under the rear cover ===== -->
+  <rect class="panel" x="12" y="318" width="460" height="290" rx="8"/>
+  <text x="28" y="346" class="h">3 · Free space under the rear (yellow) cover</text>
+  <!-- box in perspective -->
+  <path class="body" d="M110 430 L300 430 L360 390 L170 390 Z" opacity="0.35"/>
+  <path class="cut" d="M110 430 L300 430 L300 540 L110 540 Z" opacity="0.8"/>
+  <path class="cut" d="M300 430 L360 390 L360 500 L300 540 Z" opacity="0.6"/>
+  <line class="dim" x1="112" y1="560" x2="298" y2="560"/>
+  <g class="tag"><circle cx="205" cy="560" r="13"/><text x="205" y="560">W1</text></g>
+  <text x="205" y="590" class="note" text-anchor="middle">length (front–back)</text>
+  <line class="dim" x1="310" y1="550" x2="366" y2="512"/>
+  <g class="tag"><circle cx="356" cy="548" r="13"/><text x="356" y="548">W2</text></g>
+  <text x="380" y="530" class="note">width</text>
+  <line class="dim" x1="88" y1="432" x2="88" y2="538"/>
+  <g class="tag"><circle cx="66" cy="485" r="13"/><text x="66" y="485">W3</text></g>
+  <text x="34" y="455" class="note">height</text>
+  <text x="380" y="420" class="note">W4 = chassis floor</text>
+  <text x="380" y="437" class="note">height above the</text>
+  <text x="380" y="454" class="note">ground at the back</text>
+
+  <!-- ===== 4. motion checks ===== -->
+  <rect class="panel" x="488" y="318" width="460" height="290" rx="8"/>
+  <text x="504" y="346" class="h">4 · Steering angle and turning circle (top view)</text>
+  <!-- circle traced -->
+  <circle cx="640" cy="490" r="95" fill="none" stroke="#124A5A" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <circle cx="640" cy="490" r="4" fill="#124A5A"/>
+  <line class="dim" x1="545" y1="490" x2="735" y2="490"/>
+  <g class="tag"><circle cx="640" cy="470" r="13"/><text x="640" y="470">TC</text></g>
+  <text x="504" y="374" class="note">TC = diameter of the circle the front-axle centre draws</text>
+  <text x="640" y="600" class="note" text-anchor="middle">full steering lock, drive slowly, one circle</text>
+  <!-- steered wheel -->
+  <rect x="840" y="460" width="20" height="60" fill="#2B2B2B" transform="rotate(-30 850 490)"/>
+  <line x1="850" y1="420" x2="850" y2="560" stroke="#124A5A" stroke-dasharray="4 4"/>
+  <path d="M850 445 A45 45 0 0 1 873 451" fill="none" stroke="#C0392B" stroke-width="2"/>
+  <g class="tag"><circle cx="890" cy="436" r="13"/><text x="890" y="436">SA</text></g>
+  <text x="850" y="585" class="note" text-anchor="middle">rear wheel at full lock</text>
+</svg>

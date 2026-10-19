@@ -2,7 +2,7 @@
 
 Living plan. Tick a box when its acceptance check passes, not when the code is written. Requirement ids
 (FR-, SF-, AI-, T-…) refer to [docs/00-sources/system-requirements.md](00-sources/system-requirements.md).
-Last updated: 2026-10-18 (hardware-free work packages, safety fix, brand, team section).
+Last updated: 2026-10-19 (Railway deployment, hosted MQTT broker, Android APK, supervisor + university).
 
 The hardware track is the critical path: phases 1–4 run on **one** forklift, then the other two are copied in
 phase 5 (requirements §15). Software that needs no hardware runs in parallel.
@@ -23,6 +23,20 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 - [x] Move to the [Smart-Warhouse](https://github.com/Smart-Warhouse) org, one public repo per part with its own
       history: docs, backend, dashboard, landing, mobile, robot, ai. Repos sit side by side in one workspace folder
       (see [README](README.md#workspace-layout)); CI checks out the siblings it needs.
+- [x] Deploy on Railway (project `smart-warhouse`, production): every service redeploys on push to `main`.
+      | Service | Address |
+      |---|---|
+      | Landing | https://landing-production-40b4.up.railway.app |
+      | Dashboard | https://dashboard-production-0a98.up.railway.app |
+      | Backend API | https://backend-production-f8620.up.railway.app (`/api/health`) |
+      | MQTT broker | TCP `altaria.proxy.rlwy.net:38385` · TLS WebSockets `wss://mqtt-production-88ed.up.railway.app` |
+      | Postgres | private only |
+      The simulator drives the fleet; MQTT is on, so a real forklift can join once its map entry is `simulated: false`.
+      JWT secret, dashboard logins (`SEED_*_PASSWORD`) and broker logins (`MQTT_PASSWORD_<USER>`) are random values
+      kept only in Railway's service variables — never in git. *Check:* login + CORS from the dashboard origin; broker
+      refuses wrong/anonymous logins and fl1 never receives fl2's topics (tested from outside).
+- [x] Android APK `sw-floor-1.0.0.apk` (debug-signed release build, opens on the Railway server; built with
+      `flutter build apk --release --dart-define=SW_SERVER_URL=<backend URL>`).
 
 ---
 
@@ -34,10 +48,10 @@ phase 5 (requirements §15). Software that needs no hardware runs in parallel.
 | Retrain the docking AI with the real dimensions | Needs the ME-01 measurements | Send the numbers → about 15 min of retraining (A2) |
 | Build and run ROS 2, Gazebo simulation (B3–B5) | Needs Ubuntu; this laptop has no WSL distro | Run `wsl --install -d Ubuntu-22.04` yourself (it changes system settings), or use an Ubuntu PC |
 | YOLO training data (B6) | Needs the real camera mounted on the forklift | Hardware |
-| Test Mosquitto logins + ACL for real (CM-01, B7) | Docker Desktop's engine is not responding | Restart or repair Docker Desktop |
 | Camera stream for manual control (UI-08) | Needs a stream from the Jetson | Hardware |
-| Landing page: team names, supervisor, university, domain, real photos | Claude does not have this information | Send the details (TODOs in `landing/src/i18n/copy/`) |
-| Flutter release signing, test on a real phone | Needs your signing keys and a device | You |
+| Landing page + thesis: department name, custom domain | Claude does not have this information | Send the department; buy/choose a domain → attach it on Railway |
+| Test the APK on a real phone; Google Play signing | Needs a device and your signing keys | Install `sw-floor-1.0.0.apk`; create an upload key if Play is wanted |
+| Thesis `[CHECK]` items, demo roles | Team decisions | The team |
 
 **Tooling note:** an old Dart 3.7 at `C:\dart-sdk` comes before Flutter's Dart 3.12 on the PATH. Running
 `dart format` by hand reformats 28 files of `mobile` in an older style (CI uses Flutter's Dart and passes).
@@ -56,6 +70,7 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 - [ ] Get the Boost converter 6–8.4 V → 12 V, ≥ 30 W for the Jetson (EL-05) — it is not on the parts list yet.
 
 ### A2. Open and measure the first forklift (ME-01, ME-02)
+**Guide with drawings and a fill-in form: [measurements/](measurements/README.md).**
 - [ ] Document drive motor, steering type (DC or servo), lift motor, side-shift motor, free space inside.
 - [ ] Measure each motor's running and stall current (INA219 or meter) → choose the final driver.
 - [ ] Measure real dimensions: wheelbase, body length/width, fork length/width/thickness/spacing, lift range,
@@ -158,14 +173,16 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 
 ### B7. Server and apps — remaining items
 - [x] Test Mosquitto authentication + ACL for real (CM-01) *(`backend/integration`: 9 tests incl. ACL denial, Last Will
-      re-queue, retained E-stop, broker restart, 3 robots × 20 tasks; runs against a real Mosquitto container in CI;
-      locally 9/9 on the in-repo broker — [docs/17](17-integration-tests.md))*.
+      re-queue, retained E-stop, broker restart, 3 robots × 20 tasks; runs against a real Mosquitto container in CI
+      and locally with Docker Desktop (9/9, 2026-10-19) — [docs/17](17-integration-tests.md))*.
 - [x] Add Alembic migrations before the first real deployment *(migration 0001 = current schema; the server upgrades on start-up and stamps old dev databases without losing data; tested)*.
 - [x] Camera stream for manual control (UI-08) *(MJPEG streamer package `forklift_camera_stream` → authenticated
       server relay `/api/robots/{id}/camera` → dashboard viewer; tested on the laptop webcam; on the Jetson it reads the fork camera)*.
-- [ ] Release signing for the Flutter app; run it on a real phone.
-- [ ] Landing page: supervisor, university, domain *(Team section done: Nabaa Ziad Tareq, Ahmed Imad Tareq (middle),
-      Suhib Hassan Ali — photos, names in Arabic and English, footer team list)*.
+- [ ] Release signing for the Flutter app; run it on a real phone *(APK built and pointed at Railway; not yet tried on a phone)*.
+- [x] Landing page: team, supervisor, university *(Nabaa Ziad Tareq, Ahmed Imad Tareq (middle), Suhib Hassan Ali;
+      supervised by Prof. Dr. Maher Yahya Salloom, University of Baghdad — Arabic and English; also in the thesis title page)*.
+- [ ] Landing page: department and a custom domain *(the site uses the Railway address as its origin until then)*.
+- [x] Hosted deployment *(Railway, see §0)*.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Drafted from the repository on 2026-10-18. Every number has an HTML comment naming the file it comes from;
 results that need hardware are marked **planned**. Search for `[CHECK` for items the team must review, and for
-`[TEAM`, `[SUPERVISOR]`, `[UNIVERSITY]`, `[DEPARTMENT]`, `[DATE]` for placeholders.
+`[TEAM`, `[DEPARTMENT]`, `[DATE]` for placeholders.
 
 | File | Content |
 |---|---|

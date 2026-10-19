@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="Segoe UI, Arial, sans-serif" font-size="15">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#C0392B"/>
+    </marker>
+    <style>
+      .body{fill:#F2B33D;stroke:#124A5A;stroke-width:2}
+      .metal{fill:#5B6B73;stroke:#124A5A;stroke-width:2}
+      .wheel{fill:#2B2B2B;stroke:#124A5A;stroke-width:2}
+      .ghost{fill:none;stroke:#5B6B73;stroke-width:1.5;stroke-dasharray:6 4}
+      .dim{stroke:#C0392B;stroke-width:1.8;fill:none;marker-start:url(#a);marker-end:url(#a)}
+      .ext{stroke:#C0392B;stroke-width:1;stroke-dasharray:3 3}
+      .tag circle{fill:#124A5A}
+      .tag text{fill:#fff;font-weight:700;text-anchor:middle;dominant-baseline:central}
+      .lbl{fill:#124A5A}
+      .note{fill:#5B6B73;font-size:13}
+    </style>
+  </defs>
+  <rect width="960" height="560" fill="#FFFFFF"/>
+  <text x="24" y="34" font-size="20" font-weight="700" fill="#124A5A">Side view — forks to the right</text>
+  <text x="24" y="56" class="note">Origin: floor under the centre of the FRONT axle (the drive axle, under the mast).</text>
+
+  <!-- floor -->
+  <line x1="40" y1="440" x2="930" y2="440" stroke="#124A5A" stroke-width="2"/>
+  <!-- body + counterweight -->
+  <path class="body" d="M200 410 L200 330 Q200 318 214 318 L300 318 L320 300 L590 300 L590 410 Z"/>
+  <!-- overhead guard -->
+  <line x1="390" y1="300" x2="390" y2="146" stroke="#124A5A" stroke-width="5"/>
+  <line x1="545" y1="300" x2="545" y2="146" stroke="#124A5A" stroke-width="5"/>
+  <rect class="metal" x="375" y="140" width="185" height="8"/>
+  <!-- mast -->
+  <rect class="metal" x="578" y="60" width="16" height="372"/>
+  <rect class="ghost" x="580" y="34" width="12" height="40"/>
+  <!-- carriage + backrest -->
+  <rect class="metal" x="594" y="346" width="12" height="90"/>
+  <!-- fork at lift 0 -->
+  <rect class="metal" x="606" y="426" width="206" height="10"/>
+  <!-- fork at max lift (ghost) -->
+  <rect class="ghost" x="594" y="202" width="12" height="90"/>
+  <rect class="ghost" x="606" y="282" width="206" height="10"/>
+  <!-- wheels -->
+  <circle class="wheel" cx="320" cy="398" r="42"/><circle cx="320" cy="398" r="10" fill="#888"/>
+  <circle class="wheel" cx="560" cy="398" r="42"/><circle cx="560" cy="398" r="10" fill="#888"/>
+  <line x1="560" y1="350" x2="560" y2="452" class="ext"/>
+  <line x1="320" y1="350" x2="320" y2="452" class="ext"/>
+  <text x="314" y="468" class="note" text-anchor="end">rear axle (steers)</text>
+  <text x="554" y="468" class="note" text-anchor="end">front axle (drive)</text>
+
+  <!-- A wheelbase -->
+  <line class="dim" x1="322" y1="490" x2="558" y2="490"/>
+  <g class="tag"><circle cx="440" cy="490" r="13"/><text x="440" y="490">A</text></g>
+  <!-- B body behind front axle -->
+  <line x1="200" y1="410" x2="200" y2="530" class="ext"/>
+  <line class="dim" x1="202" y1="522" x2="558" y2="522"/>
+  <line x1="560" y1="452" x2="560" y2="530" class="ext"/>
+  <g class="tag"><circle cx="380" cy="522" r="13"/><text x="380" y="522">B</text></g>
+  <!-- C carriage ahead of front axle -->
+  <line x1="606" y1="440" x2="606" y2="500" class="ext"/>
+  <line class="dim" x1="562" y1="490" x2="604" y2="490"/>
+  <g class="tag"><circle cx="622" cy="508" r="13"/><text x="622" y="508">C</text></g>
+  <!-- D fork length -->
+  <line x1="812" y1="436" x2="812" y2="500" class="ext"/>
+  <line class="dim" x1="608" y1="490" x2="810" y2="490"/>
+  <g class="tag"><circle cx="710" cy="490" r="13"/><text x="710" y="490">D</text></g>
+  <!-- E mast height (known) -->
+  <line x1="594" y1="60" x2="900" y2="60" class="ext"/>
+  <line class="dim" x1="890" y1="62" x2="890" y2="438"/>
+  <g class="tag"><circle cx="890" cy="160" r="13"/><text x="890" y="160">E</text></g>
+  <!-- F lift range -->
+  <line x1="812" y1="282" x2="860" y2="282" class="ext"/>
+  <line x1="812" y1="426" x2="860" y2="426" class="ext"/>
+  <line class="dim" x1="850" y1="284" x2="850" y2="424"/>
+  <g class="tag"><circle cx="850" cy="354" r="13"/><text x="850" y="354">F</text></g>
+  <!-- G guard roof top -->
+  <line x1="160" y1="140" x2="375" y2="140" class="ext"/>
+  <line class="dim" x1="170" y1="142" x2="170" y2="438"/>
+  <g class="tag"><circle cx="170" cy="250" r="13"/><text x="170" y="250">G</text></g>
+  <!-- H fork clearance -->
+  <line x1="760" y1="437" x2="740" y2="404" stroke="#C0392B" stroke-width="1.2"/>
+  <g class="tag"><circle cx="736" cy="396" r="13"/><text x="736" y="396">H</text></g>
+  <text x="652" y="380" class="note">gap under fork at lift 0</text>
+  <!-- I wheel diameter -->
+  <line class="dim" x1="510" y1="358" x2="510" y2="438"/>
+  <g class="tag"><circle cx="490" cy="398" r="13"/><text x="490" y="398">I</text></g>
+  <!-- J mast rise -->
+  <line x1="594" y1="40" x2="640" y2="40" stroke="#C0392B" stroke-width="1.2"/>
+  <g class="tag"><circle cx="652" cy="40" r="13"/><text x="652" y="40">J</text></g>
+  <text x="672" y="45" class="note">does the mast grow at full lift? how much</text>
+  <!-- K backrest -->
+  <line x1="594" y1="346" x2="560" y2="330" stroke="#C0392B" stroke-width="1.2"/>
+  <g class="tag"><circle cx="548" cy="326" r="13"/><text x="548" y="326">K</text></g>
+  <text x="812" y="272" class="note" text-anchor="end">dashed = forks at maximum lift</text>
+  <text x="24" y="550" class="note">Total length 524 mm, width 187 mm and height 317 mm are already known (Huina 1577 Pro box).</text>
+</svg>

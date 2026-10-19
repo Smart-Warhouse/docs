@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 380" font-family="Segoe UI, Arial, sans-serif" font-size="15">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#C0392B"/>
+    </marker>
+    <style>
+      .wood{fill:#D9A35B;stroke:#124A5A;stroke-width:2}
+      .box{fill:#F2B33D;stroke:#124A5A;stroke-width:2;opacity:.55}
+      .dim{stroke:#C0392B;stroke-width:1.8;fill:none;marker-start:url(#a);marker-end:url(#a)}
+      .ext{stroke:#C0392B;stroke-width:1;stroke-dasharray:3 3}
+      .tag circle{fill:#124A5A}
+      .tag text{fill:#fff;font-weight:700;text-anchor:middle;dominant-baseline:central;font-size:13px}
+      .note{fill:#5B6B73;font-size:13}
+      .h{font-size:20px;font-weight:700;fill:#124A5A}
+    </style>
+  </defs>
+  <rect width="960" height="380" fill="#FFFFFF"/>
+  <text x="24" y="34" class="h">Pallet — front view (the side the forks enter) and side view</text>
+  <line x1="40" y1="300" x2="920" y2="300" stroke="#124A5A" stroke-width="2"/>
+
+  <!-- front view -->
+  <rect class="box" x="120" y="150" width="300" height="80"/>
+  <text x="270" y="195" class="note" text-anchor="middle">demo load</text>
+  <rect class="wood" x="120" y="230" width="300" height="18"/>
+  <rect class="wood" x="120" y="248" width="28" height="52"/>
+  <rect class="wood" x="256" y="248" width="28" height="52"/>
+  <rect class="wood" x="392" y="248" width="28" height="52"/>
+  <!-- ArUco -->
+  <rect x="254" y="252" width="32" height="32" fill="#111"/><rect x="262" y="260" width="8" height="8" fill="#fff"/><rect x="274" y="268" width="8" height="8" fill="#fff"/>
+  <!-- P1 width -->
+  <line x1="120" y1="300" x2="120" y2="334" class="ext"/><line x1="420" y1="300" x2="420" y2="334" class="ext"/>
+  <line class="dim" x1="122" y1="326" x2="418" y2="326"/>
+  <g class="tag"><circle cx="270" cy="326" r="13"/><text x="270" y="326">P1</text></g>
+  <!-- P3 total height -->
+  <line x1="120" y1="230" x2="80" y2="230" class="ext"/>
+  <line class="dim" x1="88" y1="232" x2="88" y2="298"/>
+  <g class="tag"><circle cx="66" cy="265" r="13"/><text x="66" y="265">P3</text></g>
+  <!-- P4 deck thickness -->
+  <line x1="420" y1="230" x2="460" y2="230" class="ext"/><line x1="420" y1="248" x2="460" y2="248" class="ext"/>
+  <line class="dim" x1="452" y1="206" x2="452" y2="228"/><line class="dim" x1="452" y1="272" x2="452" y2="250"/>
+  <g class="tag"><circle cx="476" cy="210" r="13"/><text x="476" y="210">P4</text></g>
+  <!-- P5 stringer width -->
+  <line x1="148" y1="300" x2="148" y2="316" class="ext"/>
+  <text x="134" y="356" class="note" text-anchor="middle">P5 = one leg (stringer) width</text>
+  <g class="tag"><circle cx="134" cy="274" r="13"/><text x="134" y="274">P5</text></g>
+  <!-- P6 opening width -->
+  <line class="dim" x1="150" y1="286" x2="254" y2="286"/>
+  <g class="tag"><circle cx="202" cy="270" r="13"/><text x="202" y="270">P6</text></g>
+  <!-- P7 load height -->
+  <line x1="120" y1="150" x2="80" y2="150" class="ext"/>
+  <line class="dim" x1="88" y1="152" x2="88" y2="228"/>
+  <g class="tag"><circle cx="66" cy="190" r="13"/><text x="66" y="190">P7</text></g>
+  <text x="300" y="140" class="note">P7 = tallest load you will carry</text>
+
+  <!-- side view -->
+  <rect class="wood" x="600" y="230" width="280" height="18"/>
+  <rect class="wood" x="600" y="248" width="280" height="52" opacity=".7"/>
+  <line x1="600" y1="300" x2="600" y2="334" class="ext"/><line x1="880" y1="300" x2="880" y2="334" class="ext"/>
+  <line class="dim" x1="602" y1="326" x2="878" y2="326"/>
+  <g class="tag"><circle cx="740" cy="326" r="13"/><text x="740" y="326">P2</text></g>
+  <text x="740" y="210" class="note" text-anchor="middle">side view: P2 = depth (how far the forks go in)</text>
+  <text x="740" y="360" class="note" text-anchor="middle">P8 = weigh the pallet + load on a kitchen scale</text>
+</svg>

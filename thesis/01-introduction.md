@@ -2,13 +2,13 @@
 
 <!--
 Draft generated from the repository on 2026-10-18. Every number carries a comment with the file it comes from.
-Placeholders: [SUPERVISOR], [UNIVERSITY], [DEPARTMENT], [DATE]. Items needing review: [CHECK].
+Placeholders: [DEPARTMENT], [DATE]. Items needing review: [CHECK].
 -->
 
-**[UNIVERSITY] · [DEPARTMENT]**
+**University of Baghdad · [DEPARTMENT]**
 **Graduation project, [ACADEMIC YEAR]**
 **Team:** Ahmed Imad Tareq (أحمد عماد طارق), Nabaa Ziad Tareq (نبأ زياد طارق), Suhib Hassan Ali (صهيب حسن علي)
-**Supervisor:** [SUPERVISOR]
+**Supervisor:** Prof. Dr. Maher Yahya Salloom
 **Submitted:** [DATE]
 
 ---
