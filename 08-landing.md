@@ -103,7 +103,7 @@ validation; BOM sums.
 
 ## Open TODOs
 
-1. Team member names, supervisor, university, department (`footer.team` in `ar.ts` and `en.ts`).
+1. Supervisor, university, department (`footer.team` in `ar.ts` and `en.ts`) — the three team names and photos are in.
 2. Real domain (`SITE_ORIGIN` + `index.html` + `robots.txt` + `sitemap.xml`; now `https://sw-fleet.example`).
 3. Real photos of the forklift and the scale warehouse; a 1200×630 `og:image`.
 4. Replace targets with measured results as tests T-01…T-16 are run (and change the honesty notes then).

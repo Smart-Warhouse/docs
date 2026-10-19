@@ -9,10 +9,10 @@
 
 | Role | Who | Device | Does |
 |---|---|---|---|
-| **Presenter** | [TEAM MEMBER 1] | clicker | Talks, drives the slide deck |
-| **Driver (laptop)** | [TEAM MEMBER 2] | demo laptop = server, signed in as `admin` | Big screen: kiosk and dashboard, Simulator panel |
-| **Floor operator** | [TEAM MEMBER 3] | Android phone with SW Floor, signed in as `operator` | Phone mirrored on the screen (scrcpy) or shown to the committee |
-| **Backup / forklift** | [TEAM MEMBER 4] | spare laptop with the same checkout + the forklift (if it runs) | Watches the forklift, ready with the fallback laptop and the videos |
+| **Presenter** | [ASSIGN: Ahmed / Nabaa / Suhib] | clicker | Talks, drives the slide deck |
+| **Driver (laptop)** | [ASSIGN: Ahmed / Nabaa / Suhib] | demo laptop = server, signed in as `admin` | Big screen: kiosk and dashboard, Simulator panel |
+| **Floor operator** | [ASSIGN: Ahmed / Nabaa / Suhib] | Android phone with SW Floor, signed in as `operator` | Phone mirrored on the screen (scrcpy) or shown to the committee |
+| **Backup / forklift** | [ASSIGN — the team has 3 members: merge this role with the floor operator or the driver] | spare laptop with the same checkout + the forklift (if it runs) | Watches the forklift, ready with the fallback laptop and the videos |
 
 Passwords for `admin` / `operator` / `viewer` are in `backend/.env.example` (`SEED_*_PASSWORD`). Do not show
 them on the projector.

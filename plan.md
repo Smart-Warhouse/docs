@@ -164,8 +164,8 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 - [x] Camera stream for manual control (UI-08) *(MJPEG streamer package `forklift_camera_stream` → authenticated
       server relay `/api/robots/{id}/camera` → dashboard viewer; tested on the laptop webcam; on the Jetson it reads the fork camera)*.
 - [ ] Release signing for the Flutter app; run it on a real phone.
-- [ ] Landing page: team names, supervisor, university, domain *(Team section with the three photos is live, Ahmed
-      in the middle; the other two names are still "to be added" — TODO in `landing/src/i18n/copy/`)*.
+- [ ] Landing page: supervisor, university, domain *(Team section done: Nabaa Ziad Tareq, Ahmed Imad Tareq (middle),
+      Suhib Hassan Ali — photos, names in Arabic and English, footer team list)*.
 
 ---
 

@@ -2,12 +2,12 @@
 
 <!--
 Draft generated from the repository on 2026-10-18. Every number carries a comment with the file it comes from.
-Placeholders: [TEAM MEMBERS], [SUPERVISOR], [UNIVERSITY], [DEPARTMENT], [DATE]. Items needing review: [CHECK].
+Placeholders: [SUPERVISOR], [UNIVERSITY], [DEPARTMENT], [DATE]. Items needing review: [CHECK].
 -->
 
 **[UNIVERSITY] · [DEPARTMENT]**
 **Graduation project, [ACADEMIC YEAR]**
-**Team:** [TEAM MEMBER 1], [TEAM MEMBER 2], [TEAM MEMBER 3], [TEAM MEMBER 4]
+**Team:** Ahmed Imad Tareq (أحمد عماد طارق), Nabaa Ziad Tareq (نبأ زياد طارق), Suhib Hassan Ali (صهيب حسن علي)
 **Supervisor:** [SUPERVISOR]
 **Submitted:** [DATE]
 
