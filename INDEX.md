@@ -17,6 +17,7 @@
 | 12 | [12-firmware.md](12-firmware.md) | ESP32-S3 firmware: tasks, state machine, safety, what is host-tested vs bench |
 | 13 | [13-ros2.md](13-ros2.md) | ROS 2 packages, node/topic graph per robot, host tests vs what needs Ubuntu |
 | 14 | [14-hardware-build.md](14-hardware-build.md) | Wiring diagram, power tree, pin map, 3D-printed mounts (`robot/cad`) |
+| — | [architecture/](architecture/README.md) | Full system architecture in one place: layers, repos, hardware, firmware, ROS 2, server, MQTT, task flow, safety, AI, testing, deployment (with PDF) |
 | — | [warehouse-map/](warehouse-map/README.md) | Current warehouse map, its 3D and occupancy models, and the requirements + recommended sizes for the new floor (EN-01 … EN-11), Arabic, with PDF |
 | — | [measurements/](measurements/README.md) | What to measure on the forklift and pallet, with drawings and a form to send back (ME-01, ME-02) |
 | 15 | [15-bench-tests.md](15-bench-tests.md) | Step-by-step bench tests T-01 … T-07 with the firmware console |
