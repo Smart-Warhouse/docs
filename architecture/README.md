@@ -44,31 +44,10 @@ read the backend's map) find it there, and CI checks the sibling out the same wa
 
 ## 3. One forklift: hardware
 
-```mermaid
-flowchart TB
-  subgraph PWR["Power"]
-    BAT["2S Li-ion<br/>4 × 18650 (2S2P)"] --> BMS["BMS 2S 20 A"] --> FUSE["Fuse 5 A"] --> SW["Main switch"]
-    SW --> ES["E-Stop (NC)<br/>motor branch only"] --> DRV["Motor drivers"]
-    SW --> BUCK["Buck 5.1 V"]
-    SW --> BOOST["Boost 12 V ≥ 30 W"]
-    INA["INA219<br/>V + I"] -.- BMS
-  end
-  DRV --> M1["Drive motor"]
-  DRV --> M3["Lift motor"]
-  BUCK --> ESP["ESP32-S3"]
-  BUCK --> SENS["Sensors, LEDs"]
-  BOOST --> JET["Jetson Orin Nano Super"]
-  ESP -->|PWM| DRV
-  ESP -->|PWM| SERVO["Steering servo"]
-  ESP -->|"I²C via TCA9548A"| TOF["6 × VL53L1X ToF"]
-  ESP -->|I²C| IMU["MPU9250 IMU"]
-  ESP -->|I²C| ENC["AS5600 encoder"]
-  ESP -->|"ADC / GPIO"| FORK["Slide pot, limit switches,<br/>TCRT5000 fork tips"]
-  JET <-->|"USB · micro-ROS"| ESP
-  JET -->|USB| LIDAR["RPLIDAR C1"]
-  JET -->|CSI| CAM["Camera (fork carriage)"]
-  JET <-->|"Wi-Fi 5 GHz"| NET(("Warehouse Wi-Fi"))
-```
+![One forklift: power, controllers, sensors](img/hardware.svg)
+
+<p align="center"><img src="img/photos/cad-all-parts.png" alt="3D-printed mounts" width="46%"></p>
+<p class="cap"><em>The 18 printed mounts, generated with CadQuery from <code>robot/cad/params.yaml</code> (placeholder sizes until the forklift is measured).</em></p>
 
 - **The E-Stop cuts only the motor branch.** The Jetson and ESP32 stay powered, so they can still log and report
   why the forklift stopped (EL-02).
@@ -80,30 +59,7 @@ flowchart TB
 FreeRTOS on both cores. All decision logic (`forklift_core`) is plain C++ tested on the laptop (60 test cases);
 the board build runs in CI.
 
-| Task | Core / rate | Job |
-|---|---|---|
-| `safety_task` | 1 · 1 kHz | E-Stop, ToF, fork height, battery, link times → safety state machine → speed limit. The only task on the hardware watchdog (1 s → reboot) |
-| `motor_pid_task` | 1 · 1 kHz | Encoder → speed → drive PID with feed-forward; rear-steer Ackermann → servo; odometry; lift controller. Brakes on its own if the safety output is > 5 ms old |
-| `tof_task` | 1 · 50 Hz | 6 × VL53L1X through the I²C mux; re-initialises a dropped sensor every 2 s |
-| `imu_task` | 0 · 100 Hz | MPU9250 → Madgwick filter |
-| `microros_task` | 0 · event | ROS 2 topics, agent reconnect, gains as ROS parameters |
-| `status_task` | 0 · 10 Hz | Battery %, LED ring, buzzer |
-
-```mermaid
-stateDiagram-v2
-    [*] --> BOOT
-    BOOT --> IDLE: drivers ready
-    IDLE --> ACTIVE: fresh cmd_vel and heartbeat alive
-    ACTIVE --> SLOW: ToF < 40 cm ahead · forks > 5 cm · docking
-    SLOW --> ACTIVE: cause gone
-    ACTIVE --> STOP: ToF < 15 cm ahead
-    SLOW --> STOP: ToF < 15 cm ahead
-    STOP --> ACTIVE: obstacle gone
-    ACTIVE --> SAFE: watchdog · battery < 8 % · sensor fault
-    SAFE --> IDLE: cause gone for 1 s
-    ACTIVE --> ESTOP: E-Stop pressed (from any state)
-    ESTOP --> BOOT: released AND explicit reset
-```
+![ESP32 firmware: cores and safety state machine](img/firmware.svg)
 
 The E-Stop is latched: releasing the button alone does nothing. While docking, the three front ToF sensors are
 ignored, because they would see the pallet the forklift is about to pick up (SF-03). Speed is capped instead.
@@ -135,22 +91,7 @@ wrappers. The whole workspace builds and passes `colcon test` in a `ros:humble` 
 | `forklift_camera_stream` | Low-resolution MJPEG of the fork camera for manual driving |
 | `forklift_sim` | Gazebo Fortress digital twin generated from the warehouse map |
 
-```mermaid
-flowchart TB
-  LIDAR[RPLIDAR] -->|scan| FILT[laser filter] --> SLAM[slam_toolbox] -->|map, map→odom| NAV[Nav2]
-  ESP[(ESP32)] -->|wheel_odom, imu| EKF[EKF] -->|odom→base_link| NAV
-  CAM[camera] -->|image_raw| ARUCO[aruco_node] -->|pallet_pose| DOCK[dock server<br/>RL policy]
-  MISSION[mission node<br/>behaviour tree] -->|navigate_to_pose| NAV
-  MISSION -->|dock action| DOCK
-  MISSION -->|lift action| LIFT[lift server]
-  NAV -->|cmd_vel_nav| SUP{{safety<br/>supervisor}}
-  DOCK -->|cmd_vel_dock| SUP
-  LIFT -->|lift_cmd| SUP
-  MISSION -->|teleop| SUP
-  SUP -->|cmd_vel 20 Hz, heartbeat| ESP
-  ESP -->|tof_ring, safety_state| SUP
-  MISSION <-->|MQTT| SERVER[(fleet server)]
-```
+![ROS 2 node graph](img/ros2.svg)
 
 **Supervisor limits:**
 
@@ -161,27 +102,7 @@ flowchart TB
 
 ## 6. Layer 4 — fleet server
 
-```mermaid
-flowchart TB
-  subgraph API["FastAPI app"]
-    REST["REST /api/*<br/>JWT roles"] --- WS["WebSocket /ws/live<br/>snapshot 2 Hz + events"]
-  end
-  subgraph FM["Fleet manager — 10 Hz loop"]
-    ALLOC["Allocator<br/>nearest · Hungarian"]
-    GRAPH["Lane graph + A*<br/>never through spurs"]
-    TRAF["Traffic manager<br/>node + lane locks,<br/>deadlock detection"]
-    POL["Policies<br/>battery, E-stop,<br/>teleop clamp, heartbeat"]
-    SIM["Simulator<br/>fake robots + scenarios"]
-  end
-  BR["MQTT bridge (aiomqtt)"]
-  DB[("PostgreSQL<br/>WMS tables")]
-  MAP[/"warehouse_map.yaml"/]
-  API --> FM
-  FM --> API
-  FM <--> DB
-  MAP --> GRAPH
-  FM <--> BR <--> MQ[["Mosquitto"]]
-```
+![Inside the fleet server](img/server.svg)
 
 | Module | Responsibility |
 |---|---|
@@ -221,7 +142,32 @@ flowchart TB
 
 Every response uses one envelope, `{ "data": …, "meta": … }`, and errors carry a stable code.
 
-## 7. Robot ↔ server communication (MQTT)
+<p align="center"><img src="img/photos/api-swagger.jpg" alt="Swagger API docs" width="28%"></p>
+<p class="cap"><em>The backend serves interactive API docs (Swagger) for every endpoint.</em></p>
+
+## 7. User interfaces
+
+All three clients talk only to the fleet server: REST for actions, and the 2 Hz WebSocket for live state. Arabic is the default (right-to-left), English is one tap away, and light and dark themes are supported.
+
+### Dashboard (control room)
+
+<p align="center"><img src="img/photos/dash-02-fleet.jpg" alt="Fleet" width="48%"> <img src="img/photos/dash-03-tasks.jpg" alt="Tasks" width="48%"></p>
+<p align="center"><img src="img/photos/dash-05-analytics.jpg" alt="Analytics" width="48%"> <img src="img/photos/dash-09-kiosk.jpg" alt="Kiosk" width="48%"></p>
+<p class="cap"><em>Fleet cards with commands, the task list, analytics with the congestion heat map, and the kiosk mode for the defence screen. The live map is shown in section 9.</em></p>
+
+### Phone app (floor worker)
+
+<p align="center"><img src="img/photos/mobile-login.jpg" alt="Login" width="18.4%"> <img src="img/photos/mobile-fleet.jpg" alt="Fleet" width="18.4%"> <img src="img/photos/mobile-map.jpg" alt="Map" width="18.4%"> <img src="img/photos/mobile-tasks.jpg" alt="Tasks" width="18.4%"> <img src="img/photos/mobile-alerts.jpg" alt="Alerts" width="18.4%"></p>
+<p class="cap"><em>Sign-in with the server address, fleet, mini map, tasks and safety alerts. <strong>STOP ALL</strong> is on every screen and needs a 1-second hold.</em></p>
+
+### Landing page (public)
+
+<p align="center"><img src="img/photos/landing-ar-dark.jpg" alt="Landing page" width="80%"></p>
+<p class="cap"><em>Public project site: Arabic and English, static, served by nginx with a strict content-security policy.</em></p>
+
+## 8. Robot ↔ server communication (MQTT)
+
+![MQTT topic map](img/mqtt.svg)
 
 | Topic | Direction | QoS | Notes |
 |---|---|---|---|
@@ -238,50 +184,18 @@ Every message carries a sequence number and a UTC timestamp, and is validated ag
 [docs/schemas](https://github.com/Smart-Warhouse/docs/tree/main/schemas). The broker has no anonymous access.
 Each robot has its own login, and the ACL lets a robot publish only its own topics.
 
-## 8. End to end: one pallet move
+## 9. End to end: one pallet move
 
-```mermaid
-sequenceDiagram
-  autonumber
-  actor Op as Operator
-  participant D as Dashboard
-  participant S as Fleet server
-  participant B as MQTT broker
-  participant R as Forklift fl1
-  Op->>D: Move pallet 7 to DOCK-OUT-1
-  D->>S: POST /api/tasks
-  S->>S: reserve pallet · allocator picks fl1 · A* route
-  S->>B: wh/fl/fl1/task
-  B->>R: task
-  R->>B: task_status accepted
-  loop every lane on the route
-    R->>B: traffic request A21--J2
-    B->>S: request
-    S->>B: grant (lane + far node locked)
-    B->>R: grant
-    R->>R: Nav2 drives the lane (supervisor + ESP32 limit speed)
-    R->>B: traffic release
-  end
-  R->>R: ArUco pose → RL docking → lift
-  R->>B: task_status picking … to_drop … dropping
-  R->>B: task_status done
-  B->>S: done
-  S->>S: ONE transaction: pallet location + inventory move + task done
-  S-->>D: WebSocket: task, inventory, map update
-```
+![One pallet move, end to end](img/task-flow.svg)
 
-## 9. Safety architecture
+<p align="center"><img src="img/photos/dash-01-live-map.jpg" alt="Live map" width="78%"></p>
+<p class="cap"><em>The same flow on the live map: each forklift's planned path and reserved lanes are highlighted.</em></p>
+
+## 10. Safety architecture
 
 Defence in depth: each layer assumes the one above it can fail.
 
-```mermaid
-flowchart TB
-  A["Server<br/>fleet E-stop (retained) · battery policy · teleop clamp · heartbeat timeout 3 s · lane locks"]
-  B["Jetson safety supervisor<br/>clamps Nav2, RL, teleop · person stop · server-loss stop"]
-  C["ESP32 safety loop, 1 kHz<br/>ToF slow / stop · watchdog · battery critical · sensor fault"]
-  D["Hardware E-Stop<br/>cuts motor power — no software involved"]
-  A --> B --> C --> D
-```
+![Four safety layers](img/safety.svg)
 
 | Failure | What happens |
 |---|---|
@@ -294,19 +208,36 @@ flowchart TB
 | Battery low / critical | Low → go charge; critical (< 8 %) → safe stop |
 | Operator presses STOP ALL | Retained E-stop: every robot holds zero speed until released |
 
-## 10. AI components
+<p align="center"><img src="img/photos/frame-sim-person.jpg" alt="Person scenario" width="48%"> <img src="img/photos/frame-sim-battery.jpg" alt="Low battery scenario" width="48%"></p>
+<p class="cap"><em>Simulator scenarios on the dashboard. Left: a person in front of fl1, so it stops at once and then resumes. Right: fl1's battery is low, so it hands back its task and drives to its charger.</em></p>
+
+<p align="center"><img src="img/photos/dash-07b-manual-control-camera.jpg" alt="Manual drive with camera" width="50%"></p>
+<p class="cap"><em>Manual drive: the fork camera is streamed only while the forklift is in manual mode, and every command is clamped by the server and the robot.</em></p>
+
+## 11. AI components
+
+![Docking AI pipeline and results](img/ai.svg)
 
 | Component | Method | Result (simulation) |
 |---|---|---|
 | Pallet docking | MuJoCo environment with domain randomisation; imitation of the classical controller, then conservative PPO; checkpoint chosen on validation seeds; exported to ONNX | **98.7 %** docked, 6.5 s (with the safety supervisor), vs 90 %, 10.3 s for the classical controller, on 1000 episodes |
 | Task allocation | Hungarian (optimal assignment) vs nearest robot | Same at low load; when saturated, **53–67 % more tasks/h** (270 runs, 15 seeds) |
-| People / obstacles | YOLOv8n/v11n, TensorRT FP16 on the Jetson | Pipeline ready; needs ≥ 400 real images per class |
+| People / obstacles | YOLO11n, TensorRT FP16 on the Jetson | Starter model (COCO persons + synthetic images): mAP@0.5 0.848, but person recall 0.68; ≥ 400 real images per class still needed |
 | Pallet pose | ArUco + solvePnP, sub-pixel corners | ≤ 1 cm, ≤ 2° required at ≤ 50 cm |
 
 The AI never drives the motors directly: every command it produces goes through the safety supervisor and the
 ESP32 safety loop, like any other command.
 
-## 11. Simulation and testing
+<p align="center"><img src="img/photos/frame-rl-classical.jpg" alt="Classical controller" width="48%"> <img src="img/photos/frame-rl-docked.jpg" alt="RL policy docked" width="48%"></p>
+<p class="cap"><em>The MuJoCo docking simulator. Left: the classical controller. Right: the trained RL policy docked from a hard start. The small views show what the fork camera's ArUco detector sees.</em></p>
+
+<p align="center"><img src="img/photos/chart-allocation.png" alt="Allocation study" width="96%"></p>
+<p class="cap"><em>Allocation study: tasks per hour against the task rate, Hungarian vs nearest robot.</em></p>
+
+<p align="center"><img src="img/photos/yolo-results.png" alt="YOLO training curves" width="72%"></p>
+<p class="cap"><em>Training curves of the starter YOLO11n model (40 epochs). This is not the final acceptance result.</em></p>
+
+## 12. Simulation and testing
 
 | Level | Tool | What it proves |
 |---|---|---|
@@ -319,39 +250,16 @@ ESP32 safety loop, like any other command.
 CI runs on every push in each repository (13 jobs across the organisation): unit tests, type checks, lint, builds,
 the ROS 2 `colcon` build and tests in `ros:humble`, and the integration suite against a real Mosquitto container.
 
-## 12. Deployment
+## 13. Deployment
 
-```mermaid
-flowchart LR
-  subgraph RW["Railway (cloud demo)"]
-    L["landing<br/>nginx"]
-    DSH["dashboard<br/>static"]
-    API["backend<br/>FastAPI"]
-    PG[("Postgres")]
-    MQ[["Mosquitto<br/>TCP proxy + WSS"]]
-    API --- PG
-    API ---|private network| MQ
-  end
-  U(("Browser")) --> L
-  U --> DSH
-  DSH -->|HTTPS + WSS| API
-  PH(("Phone app")) -->|HTTPS + WSS| API
-  subgraph LAN["Warehouse LAN (live demo)"]
-    LAP["Laptop: backend + Mosquitto<br/>(docker compose)"]
-    RT["Wi-Fi 5 GHz router"]
-    LAP --- RT
-    RT --- F1["fl1"]
-    RT --- F2["fl2"]
-    RT --- F3["fl3"]
-  end
-```
+![Railway and warehouse LAN](img/deployment.svg)
 
 - **Railway (cloud demo):** the online demo, with the simulator driving the fleet. Every push to `main` redeploys
   the matching service. Secrets live only in Railway's service variables.
 - **Warehouse LAN (live demo with real forklifts):** the same backend and broker run on a laptop on the
   warehouse Wi-Fi. That gives lower latency and no dependence on the internet.
 
-## 13. Key design decisions
+## 14. Key design decisions
 
 | Decision | Choice | Why |
 |---|---|---|

@@ -1,6 +1,5 @@
-"""README.md -> system-architecture.pdf via Edge headless. Mermaid blocks are rendered in the page
-(mermaid from jsdelivr, so the build needs internet); the printer waits for them with a virtual-time budget."""
-import html
+"""README.md -> system-architecture.pdf via Edge headless. Diagrams are the SVGs from figures.py (run it first);
+photos are in img/photos. No network needed."""
 import re
 import subprocess
 import sys
@@ -13,11 +12,9 @@ EDGE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
 src = (HERE / "README.md").read_text(encoding="utf-8")
 body = markdown.markdown(src, extensions=["tables", "fenced_code"])
-body = re.sub(r'<pre><code class="language-mermaid">(.*?)</code></pre>',
-              lambda m: f'<div class="diagram"><pre class="mermaid">{html.unescape(m.group(1))}</pre></div>', body, flags=re.S)
 body = body.replace('src="img/', f'src="{HERE.as_uri()}/img/')
 body = body.replace('<a href="system-architecture.pdf">system-architecture.pdf</a>', "this document")
-for h in ("<h2>3. ", "<h2>5. ", "<h2>6. ", "<h2>8. ", "<h2>9. "):
+for h in ("<h2>3. ", "<h2>5. ", "<h2>6. ", "<h2>7. ", "<h2>9. ", "<h2>10. ", "<h2>11. "):
     body = body.replace(h, h.replace("<h2>", '<h2 class="pb">'), 1)
 
 css = """
@@ -32,33 +29,24 @@ td { border-bottom: 1px solid #DCE3E6; padding: 4px 7px; vertical-align: top; }
 tr { break-inside: avoid; }
 tr:nth-child(even) td { background: #F4F7F9; }
 img { max-width: 100%; display: block; margin: 8px auto; break-inside: avoid; }
-.diagram { break-inside: avoid; border: 1px solid #DCE3E6; border-radius: 8px; padding: 8px; margin: 10px 0; text-align: center; }
-.diagram svg { max-width: 100% !important; height: auto; max-height: 215mm; }
-pre.mermaid { margin: 0; background: none; }
+p[align="center"] { text-align: center; margin: 8px 0 2px; break-inside: avoid; }
+p[align="center"] img { display: inline-block; box-sizing: border-box; margin: 3px 0.4%; border: 1px solid #DCE3E6; border-radius: 6px; vertical-align: top; }
+img[alt="ROS 2 node graph"] { width: 88%; }
+.cap { text-align: center; color: #5B6B73; font-size: 8.8pt; margin: 2px 6% 12px; break-before: avoid; }
 code { background: #F4F7F9; padding: 1px 4px; border-radius: 3px; font-size: 8.8pt; }
 hr { border: 0; border-top: 1px solid #DCE3E6; margin: 14px 0; }
 a { color: #124A5A; }
 .pb { break-before: page; }
 .foot { margin-top: 16px; color: #5B6B73; font-size: 8.5pt; }
 """
-init = """
-mermaid.initialize({ startOnLoad: true, theme: 'base', securityLevel: 'loose',
-  flowchart: { htmlLabels: true, curve: 'linear', useMaxWidth: true },
-  sequence: { useMaxWidth: true, mirrorActors: false },
-  themeVariables: { fontFamily: 'Segoe UI, Arial, sans-serif', fontSize: '14px',
-    primaryColor: '#E8F2F5', primaryBorderColor: '#124A5A', primaryTextColor: '#124A5A',
-    secondaryColor: '#FFF7E0', tertiaryColor: '#F4F6F6', lineColor: '#124A5A',
-    clusterBkg: '#F7FAFB', clusterBorder: '#9FB4BC', actorBkg: '#E8F2F5', actorBorder: '#124A5A',
-    noteBkgColor: '#FFF7E0', noteBorderColor: '#C98F12', labelBoxBkgColor: '#E8F2F5' } });
-"""
 page = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><title>System architecture</title>'
-        f'<style>{css}</style><script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>'
+        f'<style>{css}</style>'
         f'</head><body>{body}'
-        f'<script>{init}</script></body></html>')
+        '</body></html>')
 tmp = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE
 (tmp / "architecture.html").write_text(page, encoding="utf-8")
 pdf = HERE / "system-architecture.pdf"
 subprocess.run([EDGE, "--headless=new", "--disable-gpu", "--allow-file-access-from-files", "--no-pdf-header-footer",
-                "--virtual-time-budget=20000", "--run-all-compositor-stages-before-draw",
+                "--virtual-time-budget=5000",
                 f"--print-to-pdf={pdf}", (tmp / "architecture.html").as_uri()], check=True, capture_output=True)
 print(pdf, pdf.stat().st_size)
