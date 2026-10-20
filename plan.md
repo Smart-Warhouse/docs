@@ -97,6 +97,7 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 - [ ] Later: KiCad PCB for the three forklifts (EL-10).
 
 ### A5. Warehouse floor (EN-01 … EN-11)
+**Design guide with the current map, a proposed 6 × 4 m layout and every recommended size: [warehouse-map/](warehouse-map/README.md) (Arabic, PDF).**
 - [ ] Measure the real mini-warehouse; check aisle widths (≥ 85 cm in front of racks, EN-01/02).
 - [ ] Re-measure every location (± 2 mm) and update `backend/app/warehouse_map.yaml` (nodes, edges, zones,
       locations). Delete `warehouse.db` so it reseeds.
