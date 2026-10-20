@@ -70,7 +70,7 @@ Use `flutter` / `C:\flutter\bin\dart`, or remove `C:\dart-sdk` from the PATH.
 - [ ] Get the Boost converter 6–8.4 V → 12 V, ≥ 30 W for the Jetson (EL-05) — it is not on the parts list yet.
 
 ### A2. Open and measure the first forklift (ME-01, ME-02)
-**Guide with drawings and a fill-in form: [measurements/](measurements/README.md).**
+**Guide with drawings and a fill-in form: [measurements/](measurements/README.md). Motor currents (ME-02): [motor-tests/](motor-tests/README.md).**
 - [ ] Document drive motor, steering type (DC or servo), lift motor, side-shift motor, free space inside.
 - [ ] Measure each motor's running and stall current (INA219 or meter) → choose the final driver.
 - [ ] Measure real dimensions: wheelbase, body length/width, fork length/width/thickness/spacing, lift range,

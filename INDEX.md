@@ -19,6 +19,7 @@
 | 14 | [14-hardware-build.md](14-hardware-build.md) | Wiring diagram, power tree, pin map, 3D-printed mounts (`robot/cad`) |
 | — | [architecture/](architecture/README.md) | Full system architecture in one place: layers, repos, hardware, firmware, ROS 2, server, MQTT, task flow, safety, AI, testing, deployment (with PDF) |
 | — | [warehouse-map/](warehouse-map/README.md) | Current warehouse map, its 3D and occupancy models, and the requirements + recommended sizes for the new floor (EN-01 … EN-11), Arabic, with PDF |
+| — | [motor-tests/](motor-tests/README.md) | How to identify each motor and measure its resistance, running / stall / start current and speeds with a multimeter, with wiring drawings and a results form (ME-01, ME-02, PDF) |
 | — | [measurements/](measurements/README.md) | What to measure on the forklift and pallet, with drawings and a form to send back (ME-01, ME-02) |
 | 15 | [15-bench-tests.md](15-bench-tests.md) | Step-by-step bench tests T-01 … T-07 with the firmware console |
 | 16 | [16-vision.md](16-vision.md) | YOLO pipeline: data collection, training, ONNX/TensorRT export |
